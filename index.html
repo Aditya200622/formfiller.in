@@ -5,6 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FormAssist — Premium Form Assistance</title>
   <meta name="description" content="FormAssist: Find the right form, complete with confidence." />
+  <!-- YE 2 lines <head> ke andar, <title> ke BAAD add karo -->
+
+
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>FormAssist — Premium Form Assistance</title>
+  
+  <!-- FAVICONS -->
+  <link rel="icon" type="image/png" sizes="32x32" href="finallogo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="finallogo.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="finallogo.png">
+  
+  <!-- Ya simple single favicon -->
+  <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
+  
+  <!-- baaki meta tags -->
+
+
+
 
   <style>
     /* Color Palette & Variables */
@@ -516,11 +535,16 @@
     }
 
     .stack {
-      position: relative;
-      height: 340px;
-      max-width: 440px;
-      margin-left: auto;
-    }
+      position: relative; 
+  height: 500px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: -40px;  /* YE BADALO: -30px se -40px */
+  margin-left: auto;
+}
+.c1 { align-self: flex-start; margin-top: 0; }
+.c2 { align-self: center; margin-top: -30px; }
+.c3 { align-self: flex-end; width: 360px; height: 200px; margin-top: -60px; }
 
     .img-card {
       position: absolute;
@@ -610,9 +634,7 @@
       border-radius: 999px;
     }
 
-    .c1 { width: 78%; height: 240px; left: 0; top: 70px; }
-    .c2 { width: 84%; height: 250px; left: 10%; top: 30px; }
-    .c3 { width: 72%; height: 210px; right: 0; top: 120px; }
+    
 
     /* Sections */
     .section {
@@ -1049,6 +1071,46 @@
         transition: none;
       }
     }
+    .float img {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 16px;
+}
+.img-card {
+  position: relative; border-radius: 20px; overflow: hidden;
+}
+.stack { position: relative; z-index: 2; }
+.float { position: absolute; z-index: 1; opacity: 0.6; }
+.f1 { top: 10%; right: 10%; width: 120px; height: 180px; }
+.f2 { top: 40%; left: 5%; width: 100px; height: 160px; animation: float 6s ease-in-out infinite; }
+.f3 { bottom: 20%; right: 20%; width: 140px; height: 200px; animation: float 8s ease-in-out infinite reverse; }
+@keyframes float { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-20px); } }
+/* Ye add karo style ke end mein */
+.card-shell { 
+  background: transparent !important; 
+  border: none !important; 
+  box-shadow: none !important; 
+  padding: 0 !important;
+}
+.card { 
+  border-radius: 0 !important; 
+  border: none !important;
+}
+.navbar { position: static !important; }  /* Sticky fix */
+/* YE 4 LINES style tag ke END mein add karo (last line se pehle) */
+
+.card-shell { 
+  background: transparent !important; 
+  border: none !important; 
+  box-shadow: none !important; 
+  padding: 0 !important;
+}
+
+.card { 
+  border-radius: 0 !important; 
+  border: none !important;
+}
+
+
+
   </style>
 </head>
 
@@ -1190,55 +1252,70 @@
                 </div>
               </div>
 
-              <div class="visual" aria-label="Preview cards">
-                <div class="float f1"></div>
-                <div class="float f2"></div>
-                <div class="float f3"></div>
+             <div class="visual" aria-label="Preview cards"> 
+  <!-- Floating decorative elements with images -->
+  <div class="float f1">
+    <img src="https://images.unsplash.com/photo-1559027312-11d549664de8?w=200&h=300&fit=crop&crop=center" alt="Floating preview 1">
+  </div>
+  <div class="float f2">
+    <img src="https://images.unsplash.com/photo-1559028009-7c5b47a736cc?w=180&h=280&fit=crop&crop=center" alt="Floating preview 2">
+  </div>
+  <div class="float f3">
+    <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=220&h=320&fit=crop&crop=center" alt="Floating preview 3">
+  </div>
 
-                <div class="stack">
-                  <div class="img-card c2">
-                    <div class="card-content">
-                      <div class="card-title">
-                        <span class="chip"><span class="dot"></span> Finder</span>
-                        <span class="metric">2–3 min</span>
-                      </div>
-                      <div class="lines">
-                        <div class="line"><i style="--w:76%"></i></div>
-                        <div class="line"><i style="--w:54%"></i></div>
-                        <div class="line"><i style="--w:88%"></i></div>
-                      </div>
-                    </div>
-                  </div>
+  <div class="stack">
+    <!-- Card 1: Finder with image background -->
+    <div class="img-card c2" style="background-image: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,253,244,0.8)), url('Screenshot\ 2025-09-25\ 230400.png'); background-size: cover; background-position: center;">
+      <div class="card-content">
+        <div class="card-title">
+          <span class="chip"><span class="dot"></span> Finder</span>
+          <span class="metric">2–3 min</span>
+        </div>
+        <div class="lines">
+          <div class="line"><i style="--w:76%"></i></div>
+          <div class="line"><i style="--w:54%"></i></div>
+          <div class="line"><i style="--w:88%"></i></div>
+        </div>
+      </div>
+    </div>
 
-                  <div class="img-card c1">
-                    <div class="card-content">
-                      <div class="card-title">
-                        <span class="chip"><span class="dot"></span> Checklist</span>
-                        <span class="metric">No misses</span>
-                      </div>
-                      <div class="lines">
-                        <div class="line"><i style="--w:62%"></i></div>
-                        <div class="line"><i style="--w:82%"></i></div>
-                        <div class="line"><i style="--w:49%"></i></div>
-                      </div>
-                    </div>
-                  </div>
+    <!-- Card 2: Checklist with image background -->
+    <div class="img-card c2" style="background-image: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,253,244,0.8)), url('Screenshot\ 2025-09-25\ 230411.png'); background-size: cover; background-position: center;">
+      <div class="card-content">
+        <div class="card-title">
+          <span class="chip"><span class="dot"></span> Checklist</span>
+          <span class="metric">No misses</span>
+        </div>
+        <div class="lines">
+          <div class="line"><i style="--w:62%"></i></div>
+          <div class="line"><i style="--w:82%"></i></div>
+          <div class="line"><i style="--w:49%"></i></div>
+        </div>
+      </div>
+    </div>
 
-                  <div class="img-card c3">
-                    <div class="card-content">
-                      <div class="card-title">
-                        <span class="chip"><span class="dot"></span> Support</span>
-                        <span class="metric">Quick help</span>
-                      </div>
-                      <div class="lines">
-                        <div class="line"><i style="--w:70%"></i></div>
-                        <div class="line"><i style="--w:58%"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <!-- Card 3: Support with image background -->
+     <!-- Support Card (neeche wala ab upar aa jayega) -->
+<div class="img-card c3" style="margin-top: -60px;">  <!-- YE style add kar do -->
+  <!-- baaki same -->
+</div>
+
+    <div class="img-card c3" style="background-image: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,253,244,0.8)), url('sc'); background-size: cover; background-position: center;">
+      <div class="card-content">
+        <div class="card-title">
+          <span class="chip"><span class="dot"></span> Support</span>
+          <span class="metric">Quick help</span>
+        </div>
+        <div class="lines">
+          <div class="line"><i style="--w:70%"></i></div>
+          <div class="line"><i style="--w:58%"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
           </section>
 
           <!-- Form Finder -->
