@@ -1,0 +1,2102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FormAssist — Form filling, simple and error‑free.</title>
+  <meta name="description" content="FormAssist helps you fill forms online with DIY guides, checklists, and trained operator assistance — secure uploads, auto-delete, and order tracking." />
+  <style>
+    :root{
+      --bg:#F8FAFC;
+      --surface:#FFFFFF;
+      --surface-2:#F1F5F9;
+      --text:#0F172A;
+      --muted:#475569;
+      --muted-2:#64748B;
+      --border:#E2E8F0;
+
+      --teal:#14B8A6;
+      --teal-2:#0EA5A0;
+      --blue:#2563EB;
+      --blue-2:#1D4ED8;
+
+      --success:#16A34A;
+      --warning:#F59E0B;
+
+      --shadow-sm: 0 8px 24px rgba(15,23,42,.08);
+      --shadow-md: 0 20px 60px rgba(15,23,42,.10);
+      --radius-sm: 14px;
+      --radius-md: 18px;
+      --radius-lg: 24px;
+
+      --container: 1120px;
+      --grid-gap: 18px;
+
+      --ring: 0 0 0 4px rgba(37,99,235,.16);
+      --ring-teal: 0 0 0 4px rgba(20,184,166,.18);
+
+      --font: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
+    body{
+      margin:0;
+      font-family:var(--font);
+      color:var(--text);
+      background:
+        radial-gradient(900px 480px at 15% -10%, rgba(20,184,166,.16), rgba(20,184,166,0) 60%),
+        radial-gradient(900px 520px at 95% 0%, rgba(37,99,235,.14), rgba(37,99,235,0) 62%),
+        linear-gradient(180deg, #F8FAFC 0%, #F8FAFC 55%, #F6FAFF 100%);
+      line-height:1.45;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    button{ font-family:inherit; }
+
+    /* Utilities */
+    .container{
+      width:min(var(--container), calc(100% - 2rem));
+      margin-inline:auto;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap:var(--grid-gap);
+    }
+    .stack{ display:flex; flex-direction:column; gap:14px; }
+    .row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.72);
+      backdrop-filter: blur(10px);
+      border-radius: 999px;
+      color:var(--muted);
+      font-size: 13px;
+      white-space:nowrap;
+      box-shadow: 0 1px 0 rgba(15,23,42,.03);
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      padding:6px 10px;
+      border-radius: 999px;
+      font-size:12px;
+      font-weight:650;
+      letter-spacing:.2px;
+      border:1px solid rgba(20,184,166,.25);
+      color:#0F766E;
+      background: rgba(20,184,166,.10);
+    }
+    .badge.blue{
+      border-color: rgba(37,99,235,.25);
+      color:#1E40AF;
+      background: rgba(37,99,235,.10);
+    }
+    .badge.dark{
+      border-color: rgba(15,23,42,.12);
+      color: var(--text);
+      background: rgba(15,23,42,.04);
+    }
+
+    .card{
+      background: var(--surface);
+      border:1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+    .card.pad{ padding:18px; }
+
+    .muted{ color:var(--muted); }
+    .muted-2{ color:var(--muted-2); }
+
+    .divider{
+      height:1px;
+      background: var(--border);
+      margin: 14px 0;
+    }
+
+    /* Focus */
+    :is(a, button, input, select, summary):focus-visible{
+      outline:none;
+      box-shadow: var(--ring);
+      border-radius: 12px;
+    }
+
+    /* Buttons */
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      font-weight: 650;
+      letter-spacing:.2px;
+      font-size: 14px;
+      cursor:pointer;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease, color .15s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    .btn-primary{
+      color:#ffffff;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--blue) 120%);
+      box-shadow: 0 12px 30px rgba(37,99,235,.22);
+    }
+    .btn-primary:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 16px 44px rgba(37,99,235,.28);
+      filter: saturate(1.05);
+    }
+    .btn-primary:focus-visible{ box-shadow: var(--ring-teal); }
+
+    .btn-secondary{
+      color: var(--text);
+      background: rgba(255,255,255,.72);
+      border-color: var(--border);
+      box-shadow: 0 6px 16px rgba(15,23,42,.07);
+    }
+    .btn-secondary:hover{
+      transform: translateY(-1px);
+      background: #ffffff;
+      border-color: rgba(37,99,235,.18);
+      box-shadow: 0 14px 28px rgba(15,23,42,.10);
+    }
+
+    .btn-ghost{
+      color: var(--text);
+      background: transparent;
+      border-color: transparent;
+      padding:10px 10px;
+    }
+    .btn-ghost:hover{
+      background: rgba(15,23,42,.04);
+      border-color: rgba(15,23,42,.06);
+    }
+
+    .btn-sm{ padding:10px 12px; font-size:13px; border-radius: 11px; }
+    .btn-block{ width:100%; }
+
+    /* Header */
+    .header{
+      position: sticky;
+      top:0;
+      z-index: 60;
+      background: rgba(248,250,252,.72);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(226,232,240,.85);
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 12px 0;
+      gap: 16px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 170px;
+    }
+    .logo-mark{
+      width:34px; height:34px;
+      border-radius: 12px;
+      background:
+        radial-gradient(18px 18px at 30% 30%, rgba(255,255,255,.9), rgba(255,255,255,0) 60%),
+        linear-gradient(135deg, rgba(20,184,166,1) 0%, rgba(37,99,235,1) 120%);
+      box-shadow: 0 10px 26px rgba(37,99,235,.18);
+      border: 1px solid rgba(255,255,255,.55);
+    }
+    .brand strong{
+      font-size: 15px;
+      letter-spacing:.1px;
+    }
+    .brand span{
+      display:block;
+      font-size: 12px;
+      color: var(--muted-2);
+      margin-top: -1px;
+    }
+
+    .navlinks{
+      display:none;
+      align-items:center;
+      gap: 6px;
+      flex: 1;
+      justify-content:center;
+    }
+    .navlinks a, .navlinks button{
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 14px;
+      padding:10px 12px;
+      border-radius: 12px;
+      border:1px solid transparent;
+      background: transparent;
+      cursor:pointer;
+      transition: background .15s ease, border-color .15s ease, color .15s ease;
+    }
+    .navlinks :is(a, button):hover{
+      background: rgba(15,23,42,.04);
+      border-color: rgba(15,23,42,.06);
+      color: var(--text);
+    }
+
+    .nav-cta{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      justify-content:flex-end;
+      flex: 1;
+    }
+    .menu-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:42px; height:42px;
+      border-radius: 12px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.72);
+      box-shadow: 0 6px 18px rgba(15,23,42,.08);
+      cursor:pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .menu-btn:hover{ transform: translateY(-1px); box-shadow: 0 14px 28px rgba(15,23,42,.12); }
+
+    /* Mega dropdown */
+    .dropdown{
+      position: relative;
+    }
+    .mega{
+      position:absolute;
+      left:50%;
+      transform: translateX(-50%);
+      top: calc(100% + 10px);
+      width: min(860px, calc(100vw - 2rem));
+      display:none;
+      border-radius: var(--radius-lg);
+      border:1px solid rgba(226,232,240,.9);
+      background:
+        radial-gradient(700px 240px at 15% 0%, rgba(20,184,166,.12), rgba(20,184,166,0) 55%),
+        radial-gradient(700px 240px at 95% 0%, rgba(37,99,235,.12), rgba(37,99,235,0) 60%),
+        rgba(255,255,255,.88);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-md);
+      padding: 14px;
+    }
+    .dropdown:focus-within .mega,
+    .dropdown:hover .mega{
+      display:block;
+    }
+    .mega-grid{
+      display:grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 12px;
+    }
+    .mega .section{
+      border-radius: 18px;
+      border:1px solid rgba(226,232,240,.9);
+      background: rgba(255,255,255,.78);
+      padding: 14px;
+    }
+    .mega h4{
+      margin:0 0 8px 0;
+      font-size: 13px;
+      letter-spacing:.14px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .mega a{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      padding:10px 10px;
+      border-radius: 14px;
+      border:1px solid transparent;
+      color: var(--text);
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
+    }
+    .mega a:hover{
+      background: rgba(37,99,235,.06);
+      border-color: rgba(37,99,235,.12);
+      transform: translateY(-1px);
+    }
+    .mega small{ display:block; color: var(--muted-2); font-weight: 540; margin-top:2px; }
+    .ico{
+      width:18px; height:18px;
+      color: var(--blue);
+      flex:0 0 auto;
+      margin-top: 2px;
+    }
+
+    /* Mobile drawer */
+    .drawer-backdrop{
+      position:fixed; inset:0;
+      background: rgba(15,23,42,.40);
+      display:none;
+      z-index: 80;
+    }
+    .drawer{
+      position:fixed;
+      right:0; top:0; bottom:0;
+      width: min(420px, 92vw);
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(14px);
+      border-left: 1px solid rgba(226,232,240,.9);
+      box-shadow: -30px 0 80px rgba(15,23,42,.22);
+      transform: translateX(102%);
+      transition: transform .22s ease;
+      z-index: 90;
+      padding: 14px;
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
+    #navToggle:checked ~ .drawer-backdrop{ display:block; }
+    #navToggle:checked ~ .drawer{ transform: translateX(0%); }
+    #navToggle{ display:none; }
+
+    .drawer .drawer-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .drawer a{
+      padding: 12px 12px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,.72);
+      box-shadow: 0 6px 18px rgba(15,23,42,.08);
+      font-weight: 650;
+      color: var(--text);
+    }
+    .drawer a:hover{ border-color: rgba(37,99,235,.18); }
+
+    /* Hero */
+    .hero{
+      padding: 44px 0 22px;
+    }
+    .hero-left{ grid-column: 1 / -1; }
+    .hero-right{ grid-column: 1 / -1; }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(20,184,166,.22);
+      background: rgba(20,184,166,.08);
+      color: #0F766E;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing:.2px;
+    }
+    .kicker .dot{
+      width:8px; height:8px; border-radius:999px;
+      background: linear-gradient(135deg, var(--teal), var(--blue));
+      box-shadow: 0 0 0 3px rgba(20,184,166,.14);
+    }
+
+    h1{
+      margin: 14px 0 10px;
+      font-size: clamp(30px, 3.6vw, 48px);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+    .subhead{
+      margin:0;
+      color: var(--muted);
+      font-size: clamp(15px, 1.5vw, 18px);
+      max-width: 56ch;
+    }
+
+    .trust{
+      margin-top: 14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      align-items:center;
+    }
+
+    .hero-cta{
+      margin-top: 18px;
+      display:flex;
+      gap: 12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    /* Product mockup */
+    .mock{
+      border-radius: var(--radius-lg);
+      border:1px solid rgba(226,232,240,.9);
+      background:
+        radial-gradient(800px 300px at 10% 0%, rgba(20,184,166,.16), rgba(20,184,166,0) 55%),
+        radial-gradient(800px 300px at 95% 0%, rgba(37,99,235,.14), rgba(37,99,235,0) 60%),
+        rgba(255,255,255,.80);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-md);
+      padding: 14px;
+      overflow:hidden;
+    }
+    .mock-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 6px 6px 10px;
+    }
+    .window-dots{ display:flex; gap:7px; }
+    .window-dots span{
+      width:10px; height:10px; border-radius:999px;
+      background: rgba(15,23,42,.10);
+    }
+    .mock-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .mock-title .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(37,99,235,.18);
+      background: rgba(37,99,235,.08);
+      color:#1E40AF;
+      font-weight: 750;
+      font-size: 12px;
+    }
+
+    .mock-body{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+    }
+
+    .panel{
+      border-radius: 18px;
+      border:1px solid rgba(226,232,240,.9);
+      background: rgba(255,255,255,.78);
+      box-shadow: 0 8px 22px rgba(15,23,42,.06);
+      padding: 12px;
+      min-height: 280px;
+    }
+    .panel h3{
+      margin:0 0 6px 0;
+      font-size: 14px;
+      letter-spacing: -.01em;
+    }
+    .panel .hint{
+      margin:0 0 10px 0;
+      color: var(--muted-2);
+      font-size: 13px;
+    }
+    .stepper{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .stepper .step{
+      flex: 1;
+      border-radius: 999px;
+      height: 8px;
+      background: rgba(15,23,42,.08);
+      overflow:hidden;
+      position:relative;
+    }
+    .stepper .step::after{
+      content:"";
+      position:absolute; inset:0;
+      width: var(--w, 22%);
+      background: linear-gradient(90deg, rgba(20,184,166,1), rgba(37,99,235,1));
+      border-radius: 999px;
+    }
+    .wizard{
+      margin-top: 10px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+    }
+    .label{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing:.14px;
+      text-transform: uppercase;
+    }
+    .input{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(226,232,240,.95);
+      background: rgba(248,250,252,.72);
+    }
+    .input span{ color: var(--muted-2); font-size: 13px; }
+    .input .dot{
+      width:10px; height:10px; border-radius:999px;
+      background: rgba(15,23,42,.10);
+    }
+
+    .timeline{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .t-item{
+      display:grid;
+      grid-template-columns: 20px 1fr;
+      gap: 10px;
+      align-items:flex-start;
+      padding: 10px;
+      border-radius: 16px;
+      border: 1px solid rgba(226,232,240,.9);
+      background: rgba(255,255,255,.76);
+    }
+    .t-item .node{
+      width:12px; height:12px; border-radius:999px;
+      margin-top: 3px;
+      background: rgba(15,23,42,.18);
+      box-shadow: 0 0 0 3px rgba(15,23,42,.06);
+    }
+    .t-item.done .node{
+      background: var(--teal);
+      box-shadow: 0 0 0 3px rgba(20,184,166,.18);
+    }
+    .t-item.active .node{
+      background: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.16);
+    }
+    .t-item h4{
+      margin:0;
+      font-size: 13px;
+      letter-spacing: -.01em;
+    }
+    .t-item p{
+      margin:4px 0 0 0;
+      font-size: 12.5px;
+      color: var(--muted-2);
+    }
+
+    /* Section titles */
+    .section{
+      padding: 32px 0;
+    }
+    .section .eyebrow{
+      display:flex; align-items:center; gap:10px;
+      color: #0F766E;
+      font-weight: 800;
+      letter-spacing: .14px;
+      font-size: 13px;
+      text-transform: uppercase;
+      margin:0;
+    }
+    .section h2{
+      margin: 10px 0 8px;
+      font-size: clamp(22px, 2.5vw, 34px);
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+    }
+    .section .lead{
+      margin:0;
+      color: var(--muted);
+      max-width: 70ch;
+    }
+
+    /* Form Finder */
+    .finder{
+      margin-top: 18px;
+      border-radius: var(--radius-lg);
+      border:1px solid rgba(226,232,240,.9);
+      background:
+        radial-gradient(900px 280px at 15% 0%, rgba(20,184,166,.11), rgba(20,184,166,0) 60%),
+        radial-gradient(900px 280px at 95% 0%, rgba(37,99,235,.10), rgba(37,99,235,0) 62%),
+        rgba(255,255,255,.88);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-md);
+      padding: 14px;
+    }
+    .finder-grid{ display:grid; gap:12px; grid-template-columns: 1fr; }
+    .step-card{
+      border-radius: 18px;
+      border:1px solid rgba(226,232,240,.9);
+      background: rgba(255,255,255,.78);
+      padding: 14px;
+      box-shadow: 0 8px 22px rgba(15,23,42,.06);
+    }
+    .step-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .step-head .title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .step-index{
+      width:28px; height:28px;
+      border-radius: 10px;
+      background: rgba(15,23,42,.06);
+      display:flex; align-items:center; justify-content:center;
+      font-weight: 800;
+      color: var(--text);
+      border:1px solid rgba(15,23,42,.06);
+    }
+    .step-head h3{
+      margin:0;
+      font-size: 14px;
+      letter-spacing: -.01em;
+    }
+    .step-head p{
+      margin:4px 0 0 0;
+      color: var(--muted-2);
+      font-size: 13px;
+    }
+
+    .cat-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .cat{
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+      padding: 12px;
+      border-radius: 16px;
+      border:1px solid rgba(226,232,240,.95);
+      background: rgba(248,250,252,.72);
+      cursor:pointer;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease, box-shadow .15s ease;
+      text-align:left;
+      width:100%;
+    }
+    .cat:hover{
+      transform: translateY(-1px);
+      border-color: rgba(20,184,166,.26);
+      background: rgba(20,184,166,.06);
+      box-shadow: 0 12px 28px rgba(15,23,42,.08);
+    }
+    .cat[aria-selected="true"]{
+      border-color: rgba(37,99,235,.28);
+      background:
+        radial-gradient(420px 160px at 20% 0%, rgba(20,184,166,.18), rgba(20,184,166,0) 60%),
+        rgba(37,99,235,.06);
+      box-shadow: 0 16px 40px rgba(37,99,235,.14);
+    }
+    .cat .iconwrap{
+      width:38px; height:38px;
+      border-radius: 14px;
+      display:flex; align-items:center; justify-content:center;
+      background: linear-gradient(135deg, rgba(20,184,166,.18), rgba(37,99,235,.14));
+      border:1px solid rgba(226,232,240,.9);
+      flex:0 0 auto;
+    }
+    .cat strong{ display:block; font-size: 14px; }
+    .cat small{ display:block; color: var(--muted-2); margin-top:2px; font-weight: 560; }
+
+    .forms{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+    }
+    .chipbtn{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(226,232,240,.95);
+      background: rgba(248,250,252,.72);
+      color: var(--text);
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+      font-weight: 650;
+      font-size: 13px;
+    }
+    .chipbtn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(37,99,235,.20);
+      background: rgba(37,99,235,.06);
+      box-shadow: 0 12px 28px rgba(15,23,42,.08);
+    }
+    .chipbtn[aria-selected="true"]{
+      border-color: rgba(20,184,166,.34);
+      background: rgba(20,184,166,.10);
+      box-shadow: 0 14px 34px rgba(20,184,166,.16);
+    }
+
+    .preview-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+    .preview-top h3{ margin:0; font-size: 16px; letter-spacing:-.01em; }
+    .preview-meta{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    ul.clean{
+      margin: 10px 0 0 18px;
+      padding:0;
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+    .price{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap: 10px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(226,232,240,.9);
+    }
+    .price .amt{
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -.02em;
+    }
+    .price .note{ color: var(--muted-2); font-size: 12.5px; }
+
+    /* How it works */
+    .icon-card{
+      padding: 18px;
+      border-radius: var(--radius-md);
+      border:1px solid rgba(226,232,240,.9);
+      background: rgba(255,255,255,.82);
+      box-shadow: var(--shadow-sm);
+      height:100%;
+    }
+    .icon-bubble{
+      width:44px; height:44px;
+      border-radius: 16px;
+      display:flex; align-items:center; justify-content:center;
+      background: linear-gradient(135deg, rgba(20,184,166,.18), rgba(37,99,235,.14));
+      border:1px solid rgba(226,232,240,.9);
+      margin-bottom: 10px;
+    }
+    .icon-card h3{ margin: 0 0 6px 0; font-size: 16px; letter-spacing:-.01em; }
+    .icon-card p{ margin:0; color: var(--muted); }
+
+    /* Pricing */
+    .pricing-grid .pricecard{
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      border:1px solid rgba(226,232,240,.9);
+      background: rgba(255,255,255,.86);
+      box-shadow: var(--shadow-md);
+      position:relative;
+      overflow:hidden;
+      height:100%;
+    }
+    .pricecard.popular{
+      border-color: rgba(37,99,235,.24);
+      box-shadow: 0 26px 70px rgba(37,99,235,.18);
+    }
+    .glow{
+      position:absolute;
+      inset:-1px;
+      background:
+        radial-gradient(600px 260px at 20% 0%, rgba(20,184,166,.20), rgba(20,184,166,0) 60%),
+        radial-gradient(600px 260px at 95% 0%, rgba(37,99,235,.18), rgba(37,99,235,0) 62%);
+      opacity:.9;
+      pointer-events:none;
+      mask: linear-gradient(#000, transparent 72%);
+    }
+    .pricecard h3{ margin: 8px 0 6px 0; font-size: 18px; }
+    .pricecard .big{
+      font-size: 36px;
+      font-weight: 950;
+      letter-spacing:-.03em;
+      margin: 10px 0 2px 0;
+    }
+    .pricecard .per{ color: var(--muted-2); font-size: 13px; margin:0 0 12px 0; }
+    .featlist{ margin: 12px 0 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap: 10px; }
+    .featlist li{
+      display:flex; gap:10px; align-items:flex-start;
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+    .check{
+      width:18px; height:18px; flex:0 0 auto;
+      border-radius: 6px;
+      background: rgba(20,184,166,.12);
+      border:1px solid rgba(20,184,166,.24);
+      display:flex; align-items:center; justify-content:center;
+      color:#0F766E;
+      margin-top: 1px;
+    }
+    .pricecard .cta{ margin-top: 14px; display:flex; gap: 10px; flex-wrap:wrap; }
+
+    /* Security bullets */
+    .bullet-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .bullet{
+      padding: 14px;
+      border-radius: 18px;
+      border:1px solid rgba(226,232,240,.9);
+      background: rgba(255,255,255,.82);
+      box-shadow: 0 10px 24px rgba(15,23,42,.07);
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+    }
+    .bullet .b-ico{
+      width:40px; height:40px;
+      border-radius: 16px;
+      display:flex; align-items:center; justify-content:center;
+      border:1px solid rgba(226,232,240,.9);
+      background: linear-gradient(135deg, rgba(20,184,166,.18), rgba(37,99,235,.14));
+      flex:0 0 auto;
+    }
+    .bullet h3{ margin: 0 0 4px 0; font-size: 15px; }
+    .bullet p{ margin:0; color: var(--muted); font-size: 13.5px; }
+
+    /* Footer */
+    footer{
+      padding: 26px 0 34px;
+      border-top: 1px solid rgba(226,232,240,.9);
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(10px);
+    }
+    .footer-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .footer-col{
+      padding: 14px;
+      border-radius: 18px;
+      border:1px solid rgba(226,232,240,.9);
+      background: rgba(255,255,255,.72);
+      box-shadow: 0 10px 24px rgba(15,23,42,.06);
+    }
+    .footer-col h4{
+      margin:0 0 10px 0;
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .14px;
+    }
+    .footer-col a{
+      display:block;
+      padding: 9px 10px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      color: var(--text);
+      font-weight: 650;
+      margin-bottom: 6px;
+      background: rgba(248,250,252,.65);
+    }
+    .footer-col a:hover{
+      background: rgba(37,99,235,.06);
+      border-color: rgba(37,99,235,.12);
+    }
+    .fineprint{
+      margin-top: 12px;
+      color: var(--muted-2);
+      font-size: 12.5px;
+    }
+
+    /* Responsive */
+    @media (min-width: 920px){
+      .navlinks{ display:flex; }
+      .menu-btn{ display:none; }
+      .nav-cta{ flex: 0 0 auto; }
+
+      .hero{ padding: 56px 0 28px; }
+      .hero-left{ grid-column: 1 / span 7; }
+      .hero-right{ grid-column: 8 / span 5; }
+
+      .finder-grid{ grid-template-columns: 1fr 1fr 1.15fr; }
+      .cat-grid{ grid-template-columns: 1fr; }
+
+      .how-grid > div:nth-child(1){ grid-column: 1 / span 4; }
+      .how-grid > div:nth-child(2){ grid-column: 5 / span 4; }
+      .how-grid > div:nth-child(3){ grid-column: 9 / span 4; }
+
+      .pricing-grid > div:nth-child(1){ grid-column: 1 / span 6; }
+      .pricing-grid > div:nth-child(2){ grid-column: 7 / span 6; }
+
+      .bullet-grid{ grid-template-columns: 1fr 1fr; }
+
+      .footer-grid{
+        grid-template-columns: 1.15fr 1fr 1fr 1.35fr;
+      }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ transition:none !important; scroll-behavior:auto !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Mobile Drawer Toggle -->
+  <input id="navToggle" type="checkbox" aria-hidden="true" />
+
+  <header class="header">
+    <div class="container">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href="#top">
+          <span class="logo-mark" aria-hidden="true"></span>
+          <div>
+            <strong>FormAssist</strong>
+            <span>DIY + assisted filling</span>
+          </div>
+        </a>
+
+        <div class="navlinks" role="navigation" aria-label="Desktop navigation">
+          <div class="dropdown">
+            <button class="btn-ghost" aria-haspopup="true" aria-expanded="false">
+              Forms
+              <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <div class="mega" role="menu" aria-label="Forms mega menu">
+              <div class="mega-grid">
+                <div class="section">
+                  <h4>Popular</h4>
+                  <a href="#finder">
+                    <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M10 6h10M10 12h10M10 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M4 6h2M4 12h2M4 18h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <div>
+                      <div><strong>Entrance Exam Forms</strong></div>
+                      <small>JEE, CUET, NEET & more.</small>
+                    </div>
+                  </a>
+                  <a href="#finder">
+                    <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M7 20V9l5-5 5 5v11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div>
+                      <div><strong>Govt Job Applications</strong></div>
+                      <small>UPSC, SSC, Railways etc.</small>
+                    </div>
+                  </a>
+                  <a href="#finder">
+                    <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M4 7h16v10H4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                      <path d="M8 11h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <div>
+                      <div><strong>IDs & Licences</strong></div>
+                      <small>PAN, DL, passports & more.</small>
+                    </div>
+                  </a>
+                </div>
+
+                <div class="section">
+                  <h4>Why FormAssist</h4>
+                  <a href="#security">
+                    <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M12 2l7 4v6c0 5-3 9-7 10C8 21 5 17 5 12V6l7-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                      <path d="M9 12l2 2 4-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div>
+                      <div><strong>Secure uploads</strong></div>
+                      <small>Encrypted storage + auto-delete.</small>
+                    </div>
+                  </a>
+                  <a href="#pricing">
+                    <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M12 1v22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M17 5.5c0-2-2-3.5-5-3.5S7 3.5 7 5.5 9 9 12 9s5 1.5 5 3.5S15 16 12 16s-5-1.5-5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <div>
+                      <div><strong>Simple pricing</strong></div>
+                      <small>DIY kit or done-for-you help.</small>
+                    </div>
+                  </a>
+                  <div class="divider"></div>
+                  <div class="row" style="justify-content:space-between;">
+                    <span class="badge dark">Demo-ready UI</span>
+                    <a class="btn btn-sm btn-primary" href="#finder">
+                      Open Form Finder
+                      <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a href="#checklist">Checklist</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#help">Help/Contact</a>
+        </div>
+
+        <div class="nav-cta">
+          <a class="btn btn-secondary" href="#help" aria-label="Login or track an order">Login / Track Order</a>
+          <a class="btn btn-primary" href="#pricing" aria-label="Start now">Start Now</a>
+
+          <label for="navToggle" class="menu-btn" aria-label="Open menu" role="button" tabindex="0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </label>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <label class="drawer-backdrop" for="navToggle" aria-label="Close menu"></label>
+  <aside class="drawer" aria-label="Mobile menu">
+    <div class="drawer-top">
+      <div class="brand" style="min-width:auto;">
+        <span class="logo-mark" aria-hidden="true"></span>
+        <div>
+          <strong>FormAssist</strong>
+          <span>DIY + assisted filling</span>
+        </div>
+      </div>
+
+      <label for="navToggle" class="menu-btn" aria-label="Close menu" role="button" tabindex="0">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 7l10 10M17 7L7 17" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </label>
+    </div>
+
+    <a href="#finder" onclick="document.getElementById('navToggle').checked=false;">Forms</a>
+    <a href="#checklist" onclick="document.getElementById('navToggle').checked=false;">Checklist</a>
+    <a href="#pricing" onclick="document.getElementById('navToggle').checked=false;">Pricing</a>
+    <a href="#help" onclick="document.getElementById('navToggle').checked=false;">Help/Contact</a>
+
+    <div class="divider"></div>
+
+    <a class="btn btn-secondary btn-block" href="#help" onclick="document.getElementById('navToggle').checked=false;">Login / Track Order</a>
+    <a class="btn btn-primary btn-block" href="#pricing" onclick="document.getElementById('navToggle').checked=false;">Start Now</a>
+
+    <p class="fineprint">Tip: Use “Form Finder” to see required documents and estimated time before you pay.</p>
+  </aside>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <div class="grid">
+          <div class="hero-left">
+            <div class="stack">
+              <div class="kicker">
+                <span class="dot" aria-hidden="true"></span>
+                Premium form-filling platform
+                <span class="badge blue" style="margin-left:4px;">Auto-checks</span>
+              </div>
+
+              <h1>Form filling, simple and error‑free.</h1>
+              <p class="subhead">Entrance - Jobs - IDs &amp; Licences — DIY kit or done‑for‑you help.</p>
+
+              <div class="hero-cta">
+                <a class="btn btn-primary" href="#finder">
+                  Start Now
+                  <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+                <a class="btn btn-secondary" href="#pricing">View Plans</a>
+              </div>
+
+              <div class="trust" aria-label="Trust highlights">
+                <span class="pill">
+                  <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M7 7h10v14H7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M9 3h6v4H9z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M9 11h6M9 15h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  Ticket + Invoice
+                </span>
+                <span class="pill">
+                  <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M4 21a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M17 9l1.5 1.5L21 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Trained operators
+                </span>
+                <span class="pill">
+                  <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 2l7 4v6c0 5-3 9-7 10C8 21 5 17 5 12V6l7-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M9 12l2 2 4-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Secure uploads + auto‑delete
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-right">
+            <div class="mock" aria-label="Product mockup">
+              <div class="mock-top">
+                <div class="window-dots" aria-hidden="true">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="mock-title">
+                  <span class="chip">Order: FA‑10241</span>
+                  <span class="badge">Live preview</span>
+                </div>
+              </div>
+
+              <div class="mock-body">
+                <div class="panel">
+                  <h3>Multi‑step wizard</h3>
+                  <p class="hint">Auto-checks common errors before submission.</p>
+
+                  <div class="stepper" aria-label="Progress">
+                    <div class="step" style="--w:100%"></div>
+                    <div class="step" style="--w:64%"></div>
+                    <div class="step" style="--w:18%"></div>
+                  </div>
+
+                  <div class="wizard" role="group" aria-label="Form fields">
+                    <div class="field">
+                      <div class="label">
+                        <span>Applicant name</span>
+                        <span class="badge dark">Step 2/3</span>
+                      </div>
+                      <div class="input" aria-hidden="true">
+                        <span class="dot"></span>
+                        <span>Enter as per ID proof</span>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <div class="label">
+                        <span>Category</span>
+                        <span class="badge blue">Validated</span>
+                      </div>
+                      <div class="input" aria-hidden="true">
+                        <span class="dot"></span>
+                        <span>General / OBC / SC / ST</span>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <div class="label">
+                        <span>Upload documents</span>
+                        <span class="badge">Secure</span>
+                      </div>
+                      <div class="input" aria-hidden="true">
+                        <span class="dot"></span>
+                        <span>JPG/PDF · Auto-delete after submission</span>
+                      </div>
+                    </div>
+
+                    <div class="row" style="margin-top:2px;">
+                      <button class="btn btn-secondary btn-sm" type="button">Save draft</button>
+                      <button class="btn btn-primary btn-sm" type="button">Continue</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel">
+                  <h3>Order status</h3>
+                  <p class="hint">Track every step with operator ID & audit trail.</p>
+
+                  <div class="timeline" aria-label="Timeline">
+                    <div class="t-item done">
+                      <div class="node" aria-hidden="true"></div>
+                      <div>
+                        <h4>Payment authorized (OTP)</h4>
+                        <p>Only user can approve transactions.</p>
+                      </div>
+                    </div>
+                    <div class="t-item done">
+                      <div class="node" aria-hidden="true"></div>
+                      <div>
+                        <h4>Docs verified</h4>
+                        <p>Image clarity + name match checks.</p>
+                      </div>
+                    </div>
+                    <div class="t-item active">
+                      <div class="node" aria-hidden="true"></div>
+                      <div>
+                        <h4>Operator filling</h4>
+                        <p>Operator ID: OP‑A17 · ETA 12 min.</p>
+                      </div>
+                    </div>
+                    <div class="t-item">
+                      <div class="node" aria-hidden="true"></div>
+                      <div>
+                        <h4>Submission + receipt</h4>
+                        <p>Ticket, invoice, and acknowledgement.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="divider"></div>
+                  <div class="row" style="justify-content:space-between;">
+                    <span class="badge dark">Status: In progress</span>
+                    <button class="btn btn-secondary btn-sm" type="button">View audit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="fineprint">No external assets. Mockup is pure HTML/CSS so it works offline in a hackathon demo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form Finder -->
+    <section id="finder" class="section">
+      <div class="container">
+        <p class="eyebrow">Form Finder</p>
+        <h2>Pick a form. See docs. Finish fast.</h2>
+        <p class="lead">Use the 3‑step selector to find what you need, preview required documents, and choose between DIY kit or assisted filling.</p>
+
+        <div class="finder" role="region" aria-label="Form Finder selector">
+          <div class="finder-grid">
+            <!-- Step 1 -->
+            <div class="step-card">
+              <div class="step-head">
+                <div class="title">
+                  <div class="step-index">1</div>
+                  <div>
+                    <h3>Choose category</h3>
+                    <p>Start broad, then narrow down.</p>
+                  </div>
+                </div>
+                <span class="badge">5 categories</span>
+              </div>
+
+              <div class="cat-grid" role="listbox" aria-label="Categories">
+                <button class="cat" type="button" data-cat="entrance" aria-selected="true">
+                  <span class="iconwrap" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M4 7h16v10H4z" stroke="#0F172A" stroke-width="2" stroke-linejoin="round"/>
+                      <path d="M8 11h8" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M7 20h10" stroke="#14B8A6" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                  <span>
+                    <strong>Entrance Exams</strong>
+                    <small>JEE, CUET, NEET and more.</small>
+                  </span>
+                </button>
+
+                <button class="cat" type="button" data-cat="govt" aria-selected="false">
+                  <span class="iconwrap" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M4 10h16" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M6 10V20M18 10V20" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M8 20h8" stroke="#14B8A6" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M7 10l5-6 5 6" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span>
+                    <strong>Govt Jobs</strong>
+                    <small>SSC, UPSC, Railways etc.</small>
+                  </span>
+                </button>
+
+                <button class="cat" type="button" data-cat="private" aria-selected="false">
+                  <span class="iconwrap" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M7 7h10v14H7z" stroke="#0F172A" stroke-width="2" stroke-linejoin="round"/>
+                      <path d="M9 4h6v3H9z" stroke="#2563EB" stroke-width="2" stroke-linejoin="round"/>
+                      <path d="M9 12h6" stroke="#14B8A6" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                  <span>
+                    <strong>Private Jobs</strong>
+                    <small>Resume + onboarding forms.</small>
+                  </span>
+                </button>
+
+                <button class="cat" type="button" data-cat="ids" aria-selected="false">
+                  <span class="iconwrap" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M4 6h16v12H4z" stroke="#0F172A" stroke-width="2" stroke-linejoin="round"/>
+                      <path d="M8 10h7" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M8 14h5" stroke="#14B8A6" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M17 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" fill="rgba(20,184,166,.18)" stroke="#14B8A6" stroke-width="2"/>
+                    </svg>
+                  </span>
+                  <span>
+                    <strong>IDs &amp; Licences</strong>
+                    <small>PAN, DL, passport, etc.</small>
+                  </span>
+                </button>
+
+                <button class="cat" type="button" data-cat="cert" aria-selected="false">
+                  <span class="iconwrap" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M7 3h10v14H7z" stroke="#0F172A" stroke-width="2" stroke-linejoin="round"/>
+                      <path d="M9 7h6M9 11h6" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M12 17l2 4-2-1-2 1 2-4z" fill="rgba(20,184,166,.20)" stroke="#14B8A6" stroke-width="1.5" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <span>
+                    <strong>Certificates</strong>
+                    <small>Domicile, caste, income, etc.</small>
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-card">
+              <div class="step-head">
+                <div class="title">
+                  <div class="step-index">2</div>
+                  <div>
+                    <h3>Select form</h3>
+                    <p>Examples (hackathon demo).</p>
+                  </div>
+                </div>
+                <span class="badge blue" id="formsCount">5 forms</span>
+              </div>
+
+              <div class="forms" role="listbox" aria-label="Forms list" id="formsList"></div>
+
+              <div class="divider"></div>
+              <p class="fineprint">Tip: The preview updates instantly—replace sample items with real forms later.</p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-card">
+              <div class="step-head">
+                <div class="title">
+                  <div class="step-index">3</div>
+                  <div>
+                    <h3>Preview &amp; documents</h3>
+                    <p>See what you need before you start.</p>
+                  </div>
+                </div>
+                <span class="badge" id="timeBadge">~15 min</span>
+              </div>
+
+              <div class="preview-top">
+                <div>
+                  <h3 id="previewTitle">JEE (Main) Application</h3>
+                  <p class="muted-2" id="previewDesc" style="margin:6px 0 0 0; font-size:13.5px;">
+                    Guided steps + common error checks.
+                  </p>
+                </div>
+                <div class="preview-meta">
+                  <span class="badge blue" id="typeBadge">Entrance</span>
+                  <span class="badge" id="docsBadge">Docs: 5</span>
+                </div>
+              </div>
+
+              <div class="card pad" style="background: rgba(248,250,252,.72); border-color: rgba(226,232,240,.95);">
+                <div class="row" style="justify-content:space-between;">
+                  <span class="badge dark">Required documents</span>
+                  <span class="badge" id="difficultyBadge">Low risk</span>
+                </div>
+                <ul class="clean" id="docsList">
+                  <li>Passport-size photo (as per size & background guidelines).</li>
+                  <li>Signature scan (clear, no blur).</li>
+                  <li>Class 10 details (roll no., year, board).</li>
+                  <li>Valid ID proof (Aadhaar/PAN/Passport).</li>
+                  <li>Category/EWS certificate (if applicable).</li>
+                </ul>
+
+                <div class="price">
+                  <div>
+                    <div class="muted-2" style="font-weight:700; font-size:13px;">Starting from</div>
+                    <div class="amt" id="startPrice">₹49</div>
+                    <div class="note" id="priceNote">DIY kit available · Assisted from ₹199+</div>
+                  </div>
+                  <div class="stack" style="gap:10px; min-width: 220px;">
+                    <a class="btn btn-secondary btn-block" href="#help">View Full Details</a>
+                    <a class="btn btn-primary btn-block" href="#pricing">Continue to Plans</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+              <div class="row">
+                <span class="pill">
+                  <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 2l7 4v6c0 5-3 9-7 10C8 21 5 17 5 12V6l7-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  </svg>
+                  Uploads are encrypted
+                </span>
+                <span class="pill">
+                  <svg class="ico" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                  Auto ETA included
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section" id="checklist">
+      <div class="container">
+        <p class="eyebrow">How it works</p>
+        <h2>DIY kit or assisted filling — same checklist.</h2>
+        <p class="lead">Choose your comfort level: follow a guided kit or let a trained operator fill it while you authorize OTP/payment and review.</p>
+
+        <div class="grid how-grid" style="margin-top:16px;">
+          <div class="icon-card" style="grid-column: 1 / -1;">
+            <div class="icon-bubble" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M10 6h10M10 12h10M10 18h10" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+                <path d="M4 6h2M4 12h2M4 18h2" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>1) Find the exact form</h3>
+            <p>Use Form Finder to pick category → form → preview required documents and cost before starting.</p>
+          </div>
+
+          <div class="icon-card" style="grid-column: 1 / -1;">
+            <div class="icon-bubble" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M7 7h10v14H7z" stroke="#0F172A" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M9 11h6M9 15h6" stroke="#14B8A6" stroke-width="2" stroke-linecap="round"/>
+                <path d="M9 4h6v3H9z" stroke="#2563EB" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>2) Upload once (secure)</h3>
+            <p>Upload documents securely, get auto validation hints, and keep everything in one checklist.</p>
+          </div>
+
+          <div class="icon-card" style="grid-column: 1 / -1;">
+            <div class="icon-bubble" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2l7 4v6c0 5-3 9-7 10C8 21 5 17 5 12V6l7-4z" stroke="#0F172A" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M9 12l2 2 4-5" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>3) Submit with confidence</h3>
+            <p>Get acknowledgement + invoice, and track status with an audit trail when assisted filling is used.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="section" id="pricing">
+      <div class="container">
+        <p class="eyebrow">Pricing</p>
+        <h2>Start small. Upgrade when you want.</h2>
+        <p class="lead">DIY for speed and savings, or pick Assisted Fill when accuracy matters most.</p>
+
+        <div class="grid pricing-grid" style="margin-top:16px;">
+          <div class="pricecard" style="grid-column: 1 / -1;">
+            <div class="glow" aria-hidden="true"></div>
+            <span class="badge dark">DIY Kit</span>
+            <h3>DIY Kit — ₹49</h3>
+            <p class="muted">Guided steps, checklist, and templates for common fields.</p>
+            <div class="big">₹49</div>
+            <p class="per">One form · Instant access</p>
+
+            <ul class="featlist">
+              <li><span class="check" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 7L10 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span> Document checklist + format guidance.</li>
+              <li><span class="check" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 7L10 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span> Common mistakes & verification tips.</li>
+              <li><span class="check" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 7L10 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span> Save as draft + reuse profile fields.</li>
+            </ul>
+
+            <div class="cta">
+              <a class="btn btn-primary" href="#finder">Start with DIY</a>
+              <a class="btn btn-secondary" href="#help">Ask a question</a>
+            </div>
+          </div>
+
+          <div class="pricecard popular" style="grid-column: 1 / -1;">
+            <div class="glow" aria-hidden="true"></div>
+            <span class="badge blue">Most popular</span>
+            <h3>Assisted Fill — ₹199+</h3>
+            <p class="muted">A trained operator fills it with you—OTP/Payment always stays with you.</p>
+            <div class="big">₹199+</div>
+            <p class="per">Per form · Includes tracking</p>
+
+            <ul class="featlist">
+              <li><span class="check" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 7L10 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span> Operator ID + audit trail for accountability.</li>
+              <li><span class="check" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 7L10 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span> Doc verification and mismatch alerts.</li>
+              <li><span class="check" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 7L10 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span> Acknowledgement + ticket + invoice.</li>
+            </ul>
+
+            <div class="cta">
+              <a class="btn btn-primary" href="#help">Login / Track Order</a>
+              <a class="btn btn-secondary" href="#finder">Preview forms</a>
+            </div>
+          </div>
+        </div>
+
+        <p class="fineprint">Pricing shown is a preview for demo; you can map real pricing per form later.</p>
+      </div>
+    </section>
+
+    <!-- Security -->
+    <section class="section" id="security">
+      <div class="container">
+        <p class="eyebrow">Security &amp; Trust</p>
+        <h2>Designed for sensitive documents.</h2>
+        <p class="lead">Uploads, OTP, and audit logs are treated as first-class features—so users can trust the process end-to-end.</p>
+
+        <div class="bullet-grid" style="margin-top:16px;">
+          <div class="bullet">
+            <div class="b-ico" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2l7 4v6c0 5-3 9-7 10C8 21 5 17 5 12V6l7-4z" stroke="#0F172A" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M12 8v4" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 15h.01" stroke="#14B8A6" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <h3>User-only OTP/payment authorization</h3>
+              <p>Operators can prepare the form, but only the user approves OTP/payment steps.</p>
+            </div>
+          </div>
+
+          <div class="bullet">
+            <div class="b-ico" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M7 11V8a5 5 0 0 1 10 0v3" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+                <path d="M6 11h12v10H6z" stroke="#2563EB" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M12 15v2" stroke="#14B8A6" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Encrypted storage</h3>
+              <p>Document files and drafts are stored securely with encryption controls.</p>
+            </div>
+          </div>
+
+          <div class="bullet">
+            <div class="b-ico" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="#0F172A" stroke-width="2"/>
+                <path d="M12 7v5l3 2" stroke="#2563EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 17h8" stroke="#14B8A6" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Auto-delete after submission</h3>
+              <p>After a successful submission, uploads can be automatically removed based on policy.</p>
+            </div>
+          </div>
+
+          <div class="bullet">
+            <div class="b-ico" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M7 7h10v14H7z" stroke="#0F172A" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M9 11h6M9 15h6" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+                <path d="M9 19h4" stroke="#14B8A6" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Audit trail + operator ID</h3>
+              <p>Track who touched what and when—useful for support and dispute resolution.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Help / Contact -->
+    <section class="section" id="help">
+      <div class="container">
+        <p class="eyebrow">Help/Contact</p>
+        <h2>Need a quick assist?</h2>
+        <p class="lead">For a demo, connect WhatsApp/email links to your backend later—this UI is ready for a live pitch.</p>
+
+        <div class="grid" style="margin-top:16px;">
+          <div class="card pad" style="grid-column: 1 / -1;">
+            <div class="row" style="justify-content:space-between;">
+              <div class="stack" style="gap:6px;">
+                <div class="row" style="gap:10px;">
+                  <span class="badge">Support hours</span>
+                  <span class="badge blue">Fast response</span>
+                </div>
+                <div class="muted">WhatsApp: <strong>+91 9XXXXXXXXX</strong> · Email: <strong>support@formassist.in</strong></div>
+              </div>
+              <div class="row">
+                <button class="btn btn-secondary" type="button">Track an order</button>
+                <button class="btn btn-primary" type="button">Start a request</button>
+              </div>
+            </div>
+            <p class="fineprint">Replace placeholders with real contacts and connect buttons to your routes/forms.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="Footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand" style="min-width:auto;">
+            <span class="logo-mark" aria-hidden="true"></span>
+            <div>
+              <strong>FormAssist</strong>
+              <span>Form filling, simple & error‑free.</span>
+            </div>
+          </div>
+          <p class="fineprint">Premium, mobile‑first landing page UI (single HTML file) for hackathons and demos.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#finder">Forms</a>
+          <a href="#checklist">Checklist</a>
+          <a href="#pricing">Pricing</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="#help">Help</a>
+          <a href="#help">Contact</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#help">Privacy Policy</a>
+          <a href="#help">Terms</a>
+          <a href="#help">Refund Policy</a>
+          <div class="divider"></div>
+          <div class="fineprint">
+            WhatsApp: +91 9XXXXXXXXX<br/>
+            Email: support@formassist.in
+          </div>
+        </div>
+      </div>
+
+      <div class="fineprint" style="margin-top:14px;">
+        © <span id="year"></span> FormAssist. Built for demo purposes. Replace placeholder links and text for production.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Lightweight UI toggling for Form Finder
+    const data = {
+      entrance: {
+        label: "Entrance",
+        forms: [
+          {
+            id: "jee",
+            name: "JEE (Main) Application",
+            desc: "Guided steps + common error checks.",
+            eta: "~15 min",
+            docs: [
+              "Passport-size photo (as per size & background guidelines).",
+              "Signature scan (clear, no blur).",
+              "Class 10 details (roll no., year, board).",
+              "Valid ID proof (Aadhaar/PAN/Passport).",
+              "Category/EWS certificate (if applicable)."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "Low risk"
+          },
+          {
+            id: "cuet",
+            name: "CUET Registration",
+            desc: "Profile + subject selection with validations.",
+            eta: "~18 min",
+            docs: [
+              "Passport photo + signature scan.",
+              "Aadhaar/ID proof.",
+              "Class 10 & 12 details (marks / board).",
+              "Category certificate (if applicable).",
+              "Active email + phone number."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "Medium risk"
+          },
+          {
+            id: "neet",
+            name: "NEET Application",
+            desc: "Upload rules + accuracy checks for details.",
+            eta: "~20 min",
+            docs: [
+              "Recent photo (as per specifications).",
+              "Signature / thumb impression (if required).",
+              "ID proof (Aadhaar/Passport).",
+              "Class 10/12 details.",
+              "Category/PwD certificates (if applicable)."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "Medium risk"
+          },
+          {
+            id: "admit",
+            name: "Admit Card Download Help",
+            desc: "Download, print guidance and OTP-safe support.",
+            eta: "~7 min",
+            docs: [
+              "Application number / login ID.",
+              "DOB as per application.",
+              "Registered mobile/email access (OTP if needed).",
+              "Printer access or PDF save location."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "Low risk"
+          },
+          {
+            id: "counsel",
+            name: "Counselling Registration",
+            desc: "Choice filling checklist and document verification prep.",
+            eta: "~25 min",
+            docs: [
+              "Rank/score card.",
+              "ID proof.",
+              "Category certificate (if applicable).",
+              "Domicile certificate (if required).",
+              "Passport photo."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "High attention"
+          }
+        ]
+      },
+
+      govt: {
+        label: "Govt Jobs",
+        forms: [
+          {
+            id: "ssc",
+            name: "SSC Online Application",
+            desc: "One profile reused across multiple posts.",
+            eta: "~16 min",
+            docs: [
+              "Photo + signature scan.",
+              "ID proof.",
+              "Education details.",
+              "Category certificate (if applicable).",
+              "Active mobile + email."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "Medium risk"
+          },
+          {
+            id: "rail",
+            name: "Railway Recruitment Form",
+            desc: "Post selection + fee payment checklist.",
+            eta: "~14 min",
+            docs: [
+              "Photo + signature scan.",
+              "ID proof.",
+              "Education details.",
+              "Category certificate (if applicable).",
+              "Banking/UPI access for payment."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "Medium risk"
+          },
+          {
+            id: "upsssc",
+            name: "UPSSSC Application",
+            desc: "State-level job forms with verification steps.",
+            eta: "~18 min",
+            docs: [
+              "Photo + signature scan.",
+              "Domicile certificate (if required).",
+              "ID proof.",
+              "Education details.",
+              "Category certificate (if applicable)."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "High attention"
+          }
+        ]
+      },
+
+      private: {
+        label: "Private",
+        forms: [
+          {
+            id: "resume",
+            name: "Resume Builder + Upload",
+            desc: "Clean template + export-ready PDF checklist.",
+            eta: "~12 min",
+            docs: [
+              "Basic profile details.",
+              "Education timeline.",
+              "Skills + projects links.",
+              "Experience (if any).",
+              "Portfolio/LinkedIn/GitHub links."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "Low risk"
+          },
+          {
+            id: "onboard",
+            name: "Company Onboarding Form",
+            desc: "Bank + ID info checklist and common formatting tips.",
+            eta: "~10 min",
+            docs: [
+              "PAN/Aadhaar (as applicable).",
+              "Bank account details.",
+              "Address proof.",
+              "Passport photo (if asked)."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "Medium risk"
+          }
+        ]
+      },
+
+      ids: {
+        label: "IDs & Licences",
+        forms: [
+          {
+            id: "pan",
+            name: "PAN Application/Correction",
+            desc: "Name match checks and document prep.",
+            eta: "~12 min",
+            docs: [
+              "ID proof (Aadhaar/Passport).",
+              "Address proof (if required).",
+              "DOB proof.",
+              "Photo/signature (if required)."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "High attention"
+          },
+          {
+            id: "dl",
+            name: "Driving Licence (DL) Services",
+            desc: "Slots, docs and fee steps explained.",
+            eta: "~15 min",
+            docs: [
+              "Learner licence (if applicable).",
+              "Address proof.",
+              "Age proof.",
+              "Passport photo."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "Medium risk"
+          },
+          {
+            id: "passport",
+            name: "Passport Appointment Prep",
+            desc: "Document checklist + appointment readiness.",
+            eta: "~20 min",
+            docs: [
+              "Address proof documents.",
+              "DOB proof documents.",
+              "Passport photo (if needed).",
+              "Old passport details (if re-issue)."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "High attention"
+          }
+        ]
+      },
+
+      cert: {
+        label: "Certificates",
+        forms: [
+          {
+            id: "domicile",
+            name: "Domicile Certificate",
+            desc: "State-specific checklist and submissions.",
+            eta: "~14 min",
+            docs: [
+              "Address proof.",
+              "ID proof.",
+              "Passport photo.",
+              "Local verification docs (if required)."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "Medium risk"
+          },
+          {
+            id: "income",
+            name: "Income Certificate",
+            desc: "Docs + declaration checklist.",
+            eta: "~16 min",
+            docs: [
+              "ID proof.",
+              "Address proof.",
+              "Income proof (salary slip/affidavit as applicable).",
+              "Passport photo."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "High attention"
+          },
+          {
+            id: "caste",
+            name: "Caste Certificate",
+            desc: "Proof chain and verification readiness.",
+            eta: "~18 min",
+            docs: [
+              "ID proof.",
+              "Address proof.",
+              "Family proof documents (if applicable).",
+              "Existing certificate copy (if any)."
+            ],
+            startPrice: "₹49",
+            note: "DIY kit available · Assisted from ₹199+",
+            difficulty: "High attention"
+          }
+        ]
+      }
+    };
+
+    const els = {
+      cats: Array.from(document.querySelectorAll("[data-cat]")),
+      formsList: document.getElementById("formsList"),
+      formsCount: document.getElementById("formsCount"),
+      previewTitle: document.getElementById("previewTitle"),
+      previewDesc: document.getElementById("previewDesc"),
+      docsList: document.getElementById("docsList"),
+      docsBadge: document.getElementById("docsBadge"),
+      timeBadge: document.getElementById("timeBadge"),
+      typeBadge: document.getElementById("typeBadge"),
+      startPrice: document.getElementById("startPrice"),
+      priceNote: document.getElementById("priceNote"),
+      difficultyBadge: document.getElementById("difficultyBadge"),
+      year: document.getElementById("year")
+    };
+
+    let state = { cat: "entrance", formId: "jee" };
+
+    function renderForms(){
+      const pack = data[state.cat];
+      const forms = pack.forms;
+
+      els.formsCount.textContent = `${forms.length} forms`;
+      els.formsList.innerHTML = "";
+
+      forms.forEach((f, idx) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "chipbtn";
+        btn.setAttribute("role", "option");
+        btn.dataset.form = f.id;
+
+        const selected = f.id === state.formId || (idx === 0 && !forms.some(x => x.id === state.formId));
+        if (selected) state.formId = f.id;
+
+        btn.setAttribute("aria-selected", selected ? "true" : "false");
+        btn.innerHTML = `
+          <span style="width:8px;height:8px;border-radius:999px;background:${selected ? "linear-gradient(135deg, var(--teal), var(--blue))" : "rgba(15,23,42,.18)"}; box-shadow:0 0 0 3px ${selected ? "rgba(20,184,166,.16)" : "rgba(15,23,42,.06)"};"></span>
+          ${f.name}
+        `;
+
+        btn.addEventListener("click", () => {
+          state.formId = f.id;
+          renderForms();
+          renderPreview();
+        });
+
+        els.formsList.appendChild(btn);
+      });
+    }
+
+    function renderPreview(){
+      const pack = data[state.cat];
+      const form = pack.forms.find(f => f.id === state.formId) || pack.forms[0];
+
+      els.previewTitle.textContent = form.name;
+      els.previewDesc.textContent = form.desc;
+      els.timeBadge.textContent = form.eta;
+      els.typeBadge.textContent = pack.label;
+
+      els.docsBadge.textContent = `Docs: ${form.docs.length}`;
+      els.docsList.innerHTML = form.docs.map(d => `<li>${d}</li>`).join("");
+
+      els.startPrice.textContent = form.startPrice;
+      els.priceNote.textContent = form.note;
+
+      // Style difficulty badge
+      els.difficultyBadge.textContent = form.difficulty;
+      els.difficultyBadge.className = "badge dark";
+      const t = form.difficulty.toLowerCase();
+      if (t.includes("low")) els.difficultyBadge.className = "badge";
+      if (t.includes("medium")) els.difficultyBadge.className = "badge blue";
+    }
+
+    function setCategory(cat){
+      state.cat = cat;
+      // default to first form in category
+      state.formId = data[cat].forms[0].id;
+
+      els.cats.forEach(b => b.setAttribute("aria-selected", b.dataset.cat === cat ? "true" : "false"));
+      renderForms();
+      renderPreview();
+    }
+
+    // Bind category clicks
+    els.cats.forEach(btn => btn.addEventListener("click", () => setCategory(btn.dataset.cat)));
+
+    // Init
+    els.year.textContent = new Date().getFullYear();
+    setCategory("entrance");
+  </script>
+</body>
+</html>
