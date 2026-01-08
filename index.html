@@ -3,1115 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>FormAssist — Premium Form Assistance</title>
-  <meta name="description" content="FormAssist: Find the right form, complete with confidence." />
-  <!-- YE 2 lines <head> ke andar, <title> ke BAAD add karo -->
-
-
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>FormAssist — Premium Form Assistance</title>
-  
-  <!-- FAVICONS -->
-  <link rel="icon" type="image/png" sizes="32x32" href="finallogo.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="finallogo.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="finallogo.png">
-  
-  <!-- Ya simple single favicon -->
-  <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
-  
-  <!-- baaki meta tags -->
-
-
-
-
-  <style>
-    /* Color Palette & Variables */
-    :root {
-      --bg-soft: #eaf6ef;
-      --bg-light: #dff2e8;
-      --card-bg: #ffffff;
-      --text-dark: #0f1b14;
-      --text-muted: #4a5b52;
-      --text-line: rgba(15, 27, 20, 0.1);
-      --primary: #1f7a4a;
-      --primary-light: #2a9960;
-      --primary-soft: rgba(31, 122, 74, 0.12);
-      --shadow-sm: 0 10px 28px rgba(16, 24, 20, 0.12);
-      --shadow-md: 0 18px 60px rgba(16, 24, 20, 0.14);
-      --radius-lg: 20px;
-      --radius-md: 16px;
-      --radius-sm: 14px;
-      --container-width: 1120px;
-    }
-
-    /* Reset & Base */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      font-size: 16px;
-    }
-
-    body {
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Roboto", "Arial", sans-serif;
-      color: var(--text-dark);
-      background: radial-gradient(1000px 420px at 15% 5%, rgba(42, 153, 96, 0.18), transparent 60%),
-                  radial-gradient(900px 420px at 85% 10%, rgba(31, 122, 74, 0.14), transparent 55%),
-                  linear-gradient(180deg, var(--bg-light), var(--bg-soft) 45%, #f7fbf9);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      font: inherit;
-      cursor: pointer;
-    }
-
-    /* Container */
-    .container {
-      width: min(var(--container-width), calc(100% - 32px));
-      margin: 0 auto;
-    }
-
-    /* Decorative Elements */
-    .decor {
-      position: absolute;
-      pointer-events: none;
-      opacity: 0.95;
-    }
-
-    .blob {
-      width: 520px;
-      height: 520px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, rgba(42, 153, 96, 0.2), rgba(42, 153, 96, 0.06) 55%, transparent 72%);
-      top: -240px;
-      left: -170px;
-    }
-
-    .blob2 {
-      width: 560px;
-      height: 560px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 60% 40%, rgba(31, 122, 74, 0.18), rgba(31, 122, 74, 0.07) 50%, transparent 75%);
-      top: -270px;
-      right: -220px;
-    }
-
-    .ring {
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      border: 1px solid rgba(31, 122, 74, 0.18);
-      bottom: 40px;
-      left: 6%;
-      transform: rotate(12deg);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent);
-    }
-
-    .dots {
-      right: 6%;
-      bottom: 60px;
-      width: 170px;
-      height: 120px;
-      background-image: radial-gradient(rgba(31, 122, 74, 0.22) 1.3px, transparent 1.3px);
-      background-size: 16px 16px;
-      border-radius: 16px;
-    }
-
-    /* Wrapper */
-    .wrapper {
-      position: relative;
-      overflow: hidden;
-      padding: 28px 0;
-    }
-
-    /* Card Shell */
-    .card-shell {
-      background: rgba(255, 255, 255, 0.78);
-      border: 1px solid rgba(255, 255, 255, 0.55);
-      box-shadow: var(--shadow-md);
-      border-radius: calc(var(--radius-lg) + 8px);
-      padding: 10px;
-      backdrop-filter: blur(10px);
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--text-line);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-    }
-
-    /* Navbar */
-    .navbar {
-      position: sticky;
-      top: 10px;
-      z-index: 30;
-      background: rgba(255, 255, 255, 0.78);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(15, 27, 20, 0.08);
-      padding: 14px 18px;
-    }
-
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-
-    .logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(31, 122, 74, 0.18), rgba(42, 153, 96, 0.1));
-      border: 1px solid rgba(31, 122, 74, 0.25);
-      display: grid;
-      place-items: center;
-      box-shadow: 0 10px 18px rgba(16, 24, 20, 0.08);
-      flex-shrink: 0;
-    }
-
-    .logo svg {
-      display: block;
-      width: 20px;
-      height: 20px;
-    }
-
-    .brand-text {
-      line-height: 1.05;
-    }
-
-    .brand-name {
-      font-weight: 760;
-      letter-spacing: 0.1px;
-      font-size: 16px;
-    }
-
-    .brand-sub {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 560;
-      margin-top: 2px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex: 1;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-
-    .nav-link, .nav-btn {
-      border: 0;
-      background: transparent;
-      color: rgba(15, 27, 20, 0.92);
-      padding: 10px 12px;
-      border-radius: 12px;
-      font-weight: 650;
-      font-size: 14px;
-      transition: background 0.18s ease;
-      white-space: nowrap;
-    }
-
-    .nav-link:hover, .nav-btn:hover {
-      background: rgba(31, 122, 74, 0.08);
-    }
-
-    .nav-link:focus-visible, .nav-btn:focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 4px rgba(42, 153, 96, 0.18);
-    }
-
-    /* Dropdown */
-    .dropdown {
-      position: relative;
-    }
-
-    .dropdown-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(31, 122, 74, 0.2);
-      background: rgba(31, 122, 74, 0.06);
-      font-weight: 650;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.18s ease;
-    }
-
-    .dropdown-btn:hover {
-      background: rgba(31, 122, 74, 0.12);
-    }
-
-    .chevron {
-      width: 14px;
-      height: 14px;
-      opacity: 0.8;
-      transition: transform 0.18s ease;
-    }
-
-    .dropdown[aria-expanded="true"] .chevron {
-      transform: rotate(180deg);
-    }
-
-    .dropdown-panel {
-      position: absolute;
-      top: calc(100% + 12px);
-      left: 0;
-      min-width: 280px;
-      padding: 14px;
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid rgba(15, 27, 20, 0.1);
-      border-radius: 18px;
-      box-shadow: var(--shadow-md);
-      backdrop-filter: blur(10px);
-      display: none;
-      z-index: 100;
-    }
-
-    .dropdown[aria-expanded="true"] .dropdown-panel {
-      display: block;
-    }
-
-    .dropdown-panel a, .dropdown-panel button {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      width: 100%;
-      padding: 11px 12px;
-      border-radius: 14px;
-      border: 1px solid transparent;
-      background: rgba(31, 122, 74, 0.04);
-      font-weight: 660;
-      text-align: left;
-      margin-bottom: 8px;
-      transition: all 0.18s ease;
-    }
-
-    .dropdown-panel a:hover, .dropdown-panel button:hover {
-      border-color: rgba(31, 122, 74, 0.18);
-      background: rgba(31, 122, 74, 0.08);
-    }
-
-    .badge {
-      font-size: 11px;
-      color: var(--primary);
-      background: rgba(31, 122, 74, 0.1);
-      border: 1px solid rgba(31, 122, 74, 0.18);
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-weight: 720;
-      flex-shrink: 0;
-    }
-
-    /* Language Toggle */
-    .lang-toggle {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px;
-      border-radius: 999px;
-      border: 1px solid rgba(15, 27, 20, 0.1);
-      background: rgba(255, 255, 255, 0.75);
-    }
-
-    .lang-toggle button {
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 0;
-      font-weight: 760;
-      font-size: 12px;
-      background: transparent;
-      transition: all 0.18s ease;
-    }
-
-    .lang-toggle button[aria-pressed="true"] {
-      background: rgba(31, 122, 74, 0.12);
-      border: 1px solid rgba(31, 122, 74, 0.22);
-    }
-
-    /* Hamburger */
-    .hamburger {
-      display: none;
-      padding: 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(15, 27, 20, 0.1);
-      background: rgba(255, 255, 255, 0.75);
-      flex-shrink: 0;
-    }
-
-    .hamburger:focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 4px rgba(42, 153, 96, 0.18);
-    }
-
-    /* Hero Section */
-    .hero {
-      padding: 28px 18px 32px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 32px;
-      align-items: center;
-    }
-
-    .kicker {
-      display: inline-flex;
-      gap: 10px;
-      align-items: center;
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(31, 122, 74, 0.18);
-      background: rgba(31, 122, 74, 0.06);
-      color: rgba(15, 27, 20, 0.92);
-      font-weight: 720;
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--primary-light);
-      box-shadow: 0 0 0 6px rgba(42, 153, 96, 0.12);
-      flex-shrink: 0;
-    }
-
-    h1 {
-      font-size: clamp(32px, 5vw, 56px);
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-      margin-bottom: 14px;
-    }
-
-    .subtitle {
-      color: var(--text-muted);
-      font-size: 16px;
-      line-height: 1.6;
-      margin-bottom: 20px;
-      max-width: 54ch;
-    }
-
-    /* CTA Section */
-    .cta-section {
-      margin-top: 8px;
-    }
-
-    .cta-forms {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 13px 16px;
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(15, 27, 20, 0.1);
-      background: rgba(255, 255, 255, 0.85);
-      font-weight: 780;
-      font-size: 15px;
-      cursor: pointer;
-      transition: all 0.18s ease;
-      box-shadow: 0 10px 18px rgba(16, 24, 20, 0.08);
-      white-space: nowrap;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 26px rgba(16, 24, 20, 0.12);
-    }
-
-    .btn:focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 4px rgba(42, 153, 96, 0.18), 0 10px 18px rgba(16, 24, 20, 0.08);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      border-color: rgba(31, 122, 74, 0.3);
-      color: white;
-      box-shadow: 0 14px 26px rgba(31, 122, 74, 0.22);
-    }
-
-    .btn-primary:hover {
-      box-shadow: 0 18px 34px rgba(31, 122, 74, 0.28);
-    }
-
-    .btn-secondary {
-      background: rgba(31, 122, 74, 0.06);
-      border-color: rgba(31, 122, 74, 0.18);
-    }
-
-    .btn-full {
-      width: 100%;
-    }
-
-    /* Mini Links */
-    .mini-links {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .mini-links a {
-      color: rgba(31, 122, 74, 0.96);
-      font-weight: 720;
-      font-size: 14px;
-      padding: 6px 10px;
-      border-radius: 12px;
-      transition: background 0.18s ease;
-    }
-
-    .mini-links a:hover {
-      background: rgba(31, 122, 74, 0.08);
-    }
-
-    /* Visual Cards */
-    .visual {
-      position: relative;
-      min-height: 340px;
-      padding: 12px;
-    }
-
-    .float {
-      position: absolute;
-      border-radius: 20px;
-      border: 1px solid rgba(31, 122, 74, 0.16);
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 18px 60px rgba(16, 24, 20, 0.12);
-      animation: floaty 7s ease-in-out infinite;
-      opacity: 0.95;
-    }
-
-    .f1 { width: 70px; height: 70px; top: 16px; right: 20px; animation-delay: 0.2s; }
-    .f2 { width: 54px; height: 54px; bottom: 30px; left: 16px; animation-delay: 1.1s; }
-    .f3 { width: 92px; height: 46px; top: 54%; right: 6px; border-radius: 999px; animation-delay: 0.6s; }
-
-    @keyframes floaty {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-
-    .stack {
-      position: relative; 
-  height: 500px; 
-  display: flex; 
-  flex-direction: column; 
-  gap: -40px;  /* YE BADALO: -30px se -40px */
-  margin-left: auto;
-}
-.c1 { align-self: flex-start; margin-top: 0; }
-.c2 { align-self: center; margin-top: -30px; }
-.c3 { align-self: flex-end; width: 360px; height: 200px; margin-top: -60px; }
-
-    .img-card {
-      position: absolute;
-      border-radius: 22px;
-      border: 1px solid rgba(15, 27, 20, 0.1);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.55)),
-                  radial-gradient(400px 220px at 20% 20%, rgba(42, 153, 96, 0.22), transparent 55%),
-                  radial-gradient(340px 200px at 80% 30%, rgba(31, 122, 74, 0.16), transparent 56%);
-      box-shadow: 0 20px 70px rgba(16, 24, 20, 0.16);
-      overflow: hidden;
-      transform-style: preserve-3d;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-      padding: 16px;
-    }
-
-    .img-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 26px 80px rgba(16, 24, 20, 0.18);
-    }
-
-    .img-card::after {
-      content: "";
-      position: absolute;
-      inset: -1px;
-      background: radial-gradient(600px 200px at 20% 0%, rgba(255, 255, 255, 0.55), transparent 60%),
-                  linear-gradient(135deg, rgba(31, 122, 74, 0.1), transparent 45%, rgba(255, 255, 255, 0.35));
-      mix-blend-mode: overlay;
-      opacity: 0.9;
-      pointer-events: none;
-    }
-
-    .card-content {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .card-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.72);
-      border: 1px solid rgba(15, 27, 20, 0.1);
-      font-weight: 800;
-      font-size: 13px;
-    }
-
-    .metric {
-      padding: 8px 12px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.6);
-      border: 1px solid rgba(15, 27, 20, 0.1);
-      font-weight: 720;
-      color: rgba(15, 27, 20, 0.9);
-      font-size: 13px;
-    }
-
-    .lines {
-      display: grid;
-      gap: 8px;
-      margin-top: auto;
-    }
-
-    .line {
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(15, 27, 20, 0.08);
-      overflow: hidden;
-    }
-
-    .line i {
-      display: block;
-      height: 100%;
-      width: var(--w, 60%);
-      background: linear-gradient(90deg, rgba(31, 122, 74, 0.22), rgba(42, 153, 96, 0.3));
-      border-radius: 999px;
-    }
-
-    
-
-    /* Sections */
-    .section {
-      padding: 32px 18px;
-      border-top: 1px solid rgba(15, 27, 20, 0.08);
-    }
-
-    .section h2 {
-      font-size: 24px;
-      letter-spacing: -0.01em;
-      margin-bottom: 10px;
-    }
-
-    .section p {
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 18px;
-      max-width: 70ch;
-    }
-
-    /* Form Finder */
-    .stepper {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 18px;
-      align-items: start;
-    }
-
-    .panel {
-      background: rgba(255, 255, 255, 0.75);
-      border: 1px solid rgba(15, 27, 20, 0.1);
-      border-radius: 18px;
-      padding: 16px;
-      box-shadow: 0 14px 32px rgba(16, 24, 20, 0.08);
-    }
-
-    .steps {
-      display: grid;
-      gap: 12px;
-    }
-
-    .step {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-      padding: 14px;
-      border-radius: 16px;
-      border: 1px solid rgba(15, 27, 20, 0.1);
-      background: rgba(255, 255, 255, 0.72);
-    }
-
-    .num {
-      width: 32px;
-      height: 32px;
-      border-radius: 10px;
-      background: rgba(31, 122, 74, 0.1);
-      border: 1px solid rgba(31, 122, 74, 0.18);
-      display: grid;
-      place-items: center;
-      font-weight: 850;
-      color: rgba(31, 122, 74, 0.98);
-      flex-shrink: 0;
-    }
-
-    label {
-      display: block;
-      font-weight: 720;
-      margin: 12px 0 8px;
-      color: rgba(15, 27, 20, 0.92);
-      font-size: 14px;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 12px 13px;
-      border-radius: 14px;
-      border: 1px solid rgba(15, 27, 20, 0.12);
-      background: rgba(255, 255, 255, 0.85);
-      font-size: 14px;
-      transition: all 0.18s ease;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      box-shadow: 0 0 0 4px rgba(42, 153, 96, 0.18);
-      border-color: rgba(42, 153, 96, 0.35);
-    }
-
-    .inline {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .inline > * {
-      flex: 1 1 160px;
-      min-width: 140px;
-    }
-
-    .hint {
-      font-size: 13px;
-      color: rgba(74, 91, 82, 0.92);
-      margin-top: 8px;
-      line-height: 1.5;
-    }
-
-    /* Pricing */
-    .pricing {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      align-items: stretch;
-    }
-
-    .price-card {
-      border-radius: 20px;
-      padding: 16px;
-      border: 1px solid rgba(15, 27, 20, 0.1);
-      background: rgba(255, 255, 255, 0.78);
-      box-shadow: 0 14px 32px rgba(16, 24, 20, 0.08);
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      min-height: 260px;
-      transition: all 0.18s ease;
-    }
-
-    .price-card:hover {
-      box-shadow: 0 18px 44px rgba(31, 122, 74, 0.14);
-    }
-
-    .price-card.featured {
-      border-color: rgba(31, 122, 74, 0.24);
-      background: linear-gradient(180deg, rgba(31, 122, 74, 0.08), rgba(255, 255, 255, 0.82) 40%);
-      box-shadow: 0 18px 44px rgba(31, 122, 74, 0.14);
-    }
-
-    .price-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .plan {
-      font-weight: 860;
-      letter-spacing: -0.01em;
-      font-size: 17px;
-    }
-
-    .price {
-      font-weight: 900;
-      font-size: 28px;
-      letter-spacing: -0.02em;
-    }
-
-    .per {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 700;
-    }
-
-    .features {
-      margin: 0;
-      padding-left: 20px;
-      color: rgba(15, 27, 20, 0.88);
-      line-height: 1.6;
-      font-size: 14px;
-    }
-
-    .features li {
-      margin-bottom: 8px;
-    }
-
-    .price-card .btn {
-      margin-top: auto;
-      width: 100%;
-    }
-
-    /* Support */
-    .support-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    /* Footer */
-    footer {
-      padding: 20px 18px;
-      border-top: 1px solid rgba(15, 27, 20, 0.08);
-      color: rgba(74, 91, 82, 0.92);
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    footer a {
-      color: rgba(31, 122, 74, 0.96);
-      font-weight: 720;
-      padding: 6px 10px;
-      border-radius: 12px;
-      transition: background 0.18s ease;
-    }
-
-    footer a:hover {
-      background: rgba(31, 122, 74, 0.08);
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    /* Mobile Responsive */
-    @media (max-width: 1024px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      .hamburger {
-        display: flex;
-        align-items: center;
-      }
-
-      .stepper {
-        grid-template-columns: 1fr;
-      }
-
-      .pricing {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .support-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .cta-forms {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .nav-inner {
-        gap: 10px;
-      }
-
-      .brand-name {
-        font-size: 14px;
-      }
-
-      .brand-sub {
-        font-size: 11px;
-      }
-
-      h1 {
-        font-size: clamp(24px, 4vw, 36px);
-      }
-
-      .subtitle {
-        font-size: 15px;
-      }
-
-      .cta-forms {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
-      .btn {
-        padding: 12px 14px;
-        font-size: 14px;
-      }
-
-      .mini-links {
-        gap: 12px;
-      }
-
-      .visual {
-        min-height: 300px;
-      }
-
-      .stack {
-        height: 300px;
-      }
-
-      .pricing {
-        grid-template-columns: 1fr;
-      }
-
-      .section {
-        padding: 24px 14px;
-      }
-
-      .hero {
-        padding: 20px 14px 24px;
-      }
-
-      .container {
-        width: calc(100% - 24px);
-      }
-    }
-
-    @media (max-width: 480px) {
-      .nav-inner {
-        flex-wrap: nowrap;
-      }
-
-      .brand {
-        min-width: auto;
-      }
-
-      .logo {
-        width: 36px;
-        height: 36px;
-      }
-
-      .logo svg {
-        width: 18px;
-        height: 18px;
-      }
-
-      .nav-right {
-        gap: 8px;
-      }
-
-      .lang-toggle {
-        gap: 4px;
-        padding: 4px;
-      }
-
-      .lang-toggle button {
-        padding: 6px 8px;
-        font-size: 11px;
-      }
-
-      h1 {
-        font-size: clamp(20px, 3vw, 28px);
-      }
-
-      .subtitle {
-        font-size: 14px;
-      }
-
-      .cta-forms {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
-      .btn {
-        padding: 11px 12px;
-        font-size: 13px;
-      }
-
-      .mini-links {
-        gap: 10px;
-        font-size: 13px;
-      }
-
-      .visual {
-        min-height: 260px;
-      }
-
-      .stack {
-        height: 260px;
-        max-width: 100%;
-      }
-
-      .section {
-        padding: 20px 12px;
-      }
-
-      .section h2 {
-        font-size: 18px;
-      }
-
-      .stepper {
-        gap: 12px;
-      }
-
-      .panel {
-        padding: 12px;
-      }
-
-      .step {
-        padding: 10px;
-        gap: 10px;
-      }
-
-      .num {
-        width: 28px;
-        height: 28px;
-        font-size: 13px;
-      }
-
-      label {
-        font-size: 13px;
-        margin: 10px 0 6px;
-      }
-
-      input, select, textarea {
-        padding: 10px 11px;
-        font-size: 13px;
-      }
-
-      footer {
-        padding: 16px 12px;
-        font-size: 12px;
-      }
-
-      .dropdown-panel {
-        min-width: 240px;
-      }
-    }
-
-    /* Reduced Motion */
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-
-      .float {
-        animation: none;
-      }
-
-      .btn, .img-card, .nav-link {
-        transition: none;
-      }
-    }
-    .float img {
-  width: 100%; height: 100%; object-fit: cover; border-radius: 16px;
-}
-.img-card {
-  position: relative; border-radius: 20px; overflow: hidden;
-}
-.stack { position: relative; z-index: 2; }
-.float { position: absolute; z-index: 1; opacity: 0.6; }
-.f1 { top: 10%; right: 10%; width: 120px; height: 180px; }
-.f2 { top: 40%; left: 5%; width: 100px; height: 160px; animation: float 6s ease-in-out infinite; }
-.f3 { bottom: 20%; right: 20%; width: 140px; height: 200px; animation: float 8s ease-in-out infinite reverse; }
-@keyframes float { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-20px); } }
-/* Ye add karo style ke end mein */
-.card-shell { 
-  background: transparent !important; 
-  border: none !important; 
-  box-shadow: none !important; 
-  padding: 0 !important;
-}
-.card { 
-  border-radius: 0 !important; 
-  border: none !important;
-}
-.navbar { position: static !important; }  /* Sticky fix */
-/* YE 4 LINES style tag ke END mein add karo (last line se pehle) */
-
-.card-shell { 
-  background: transparent !important; 
-  border: none !important; 
-  box-shadow: none !important; 
-  padding: 0 !important;
-}
-
-.card { 
-  border-radius: 0 !important; 
-  border: none !important;
-}
-
-
-
-  </style>
+  <meta name="description" content="Find the right form, follow a verified checklist, and submit with confidence. Optional guided support + tracking." />
+
+  <!-- Open Graph (for WhatsApp/social preview) -->
+  <meta property="og:title" content="FormAssist — Premium Form Assistance" />
+  <meta property="og:description" content="Find the right form, follow a verified checklist, and submit with confidence." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="finallogo.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="finallogo.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="finallogo.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="finallogo.png" />
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
@@ -1143,7 +50,6 @@
               </a>
 
               <nav class="nav-links" aria-label="Main">
-                <!-- Forms Dropdown -->
                 <div class="dropdown" id="ddForms" aria-expanded="false">
                   <button type="button" class="dropdown-btn" data-dd="forms" aria-haspopup="true" aria-expanded="false">
                     Forms
@@ -1153,32 +59,20 @@
                   </button>
 
                   <div class="dropdown-panel" role="menu">
-                    <a href="#form-finder" data-prefill="Entrance Exams">
-                      Entrance Exams <span class="badge">Fast</span>
-                    </a>
-                    <a href="#form-finder" data-prefill="Govt Jobs">
-                      Govt Jobs <span class="badge">New</span>
-                    </a>
-                    <a href="#form-finder" data-prefill="Private Jobs">
-                      Private Jobs <span class="badge">Pro</span>
-                    </a>
-                    <a href="#form-finder" data-prefill="IDs & Licences">
-                      IDs &amp; Licences <span class="badge">ID</span>
-                    </a>
-                    <a href="#form-finder" data-prefill="Certificates">
-                      Certificates <span class="badge">Doc</span>
-                    </a>
-                    <a href="#form-finder" data-prefill="Other">
-                      Other / Custom <span class="badge">+</span>
-                    </a>
+                    <a href="#form-finder" data-prefill="Entrance Exams">Entrance Exams <span class="badge">Fast</span></a>
+                    <a href="#form-finder" data-prefill="Govt Jobs">Govt Jobs <span class="badge">New</span></a>
+                    <a href="#form-finder" data-prefill="Private Jobs">Private Jobs <span class="badge">Pro</span></a>
+                    <a href="#form-finder" data-prefill="IDs & Licences">IDs &amp; Licences <span class="badge">ID</span></a>
+                    <a href="#form-finder" data-prefill="Certificates">Certificates <span class="badge">Doc</span></a>
+                    <a href="#form-finder" data-prefill="Other">Other / Custom <span class="badge">+</span></a>
                   </div>
                 </div>
 
+                <a class="nav-link" href="#how-it-works">How it works</a>
                 <a class="nav-link" href="#checklist">Checklist</a>
                 <a class="nav-link" href="#pricing">Pricing</a>
                 <a class="nav-link" href="#support">Support</a>
 
-                <!-- More Dropdown -->
                 <div class="dropdown" id="ddMore" aria-expanded="false">
                   <button type="button" class="dropdown-btn" data-dd="more" aria-haspopup="true" aria-expanded="false">
                     More
@@ -1187,6 +81,7 @@
                     </svg>
                   </button>
                   <div class="dropdown-panel" role="menu">
+                    <a href="#faq">FAQ</a>
                     <a href="#privacy">Privacy Policy</a>
                     <a href="#terms">Terms</a>
                     <a href="#refund">Refund</a>
@@ -1199,7 +94,8 @@
                   <button type="button" id="langEN" aria-pressed="true">EN</button>
                   <button type="button" id="langHI" aria-pressed="false">हिंदी</button>
                 </div>
-                <button class="hamburger" id="openDrawer" aria-label="Open menu">
+
+                <button class="hamburger" id="openDrawer" aria-label="Open menu" aria-expanded="false" aria-controls="mobileDrawer">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="3" y1="6" x2="21" y2="6"></line>
                     <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -1210,118 +106,178 @@
             </div>
           </header>
 
+          <!-- Mobile Drawer -->
+          <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+          <aside class="drawer" id="mobileDrawer" aria-hidden="true">
+            <div class="drawer-top">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span class="logo" aria-hidden="true" style="width:34px;height:34px;border-radius:12px;">
+                  <svg viewBox="0 0 24 24" fill="none" style="width:18px;height:18px;">
+                    <path d="M7 3h7l3 3v15a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3Z" stroke="rgba(31,122,74,.9)" stroke-width="1.6"/>
+                    <path d="M14 3v4a2 2 0 0 0 2 2h4" stroke="rgba(31,122,74,.9)" stroke-width="1.6"/>
+                  </svg>
+                </span>
+                <div>
+                  <div style="font-weight:850;line-height:1;">Menu</div>
+                  <div class="hint" style="margin:4px 0 0;">Quick navigation</div>
+                </div>
+              </div>
+              <button class="icon-btn" id="closeDrawer" aria-label="Close menu">✕</button>
+            </div>
+
+            <div class="drawer-links">
+              <a href="#form-finder">Form Finder</a>
+              <a href="#how-it-works">How it works</a>
+              <a href="#checklist">Checklist</a>
+              <a href="#pricing">Pricing</a>
+              <a href="#support">Support</a>
+              <a href="#faq">FAQ</a>
+              <a href="#privacy">Privacy</a>
+              <a href="#terms">Terms</a>
+              <a href="#refund">Refund</a>
+            </div>
+
+            <div class="drawer-cta">
+              <a class="btn btn-primary btn-full" href="#form-finder">Start now</a>
+              <a class="btn btn-secondary btn-full" href="#support">Talk to support</a>
+            </div>
+          </aside>
+
           <!-- Hero -->
           <section class="hero" aria-label="Hero">
             <div class="hero-grid">
               <div>
-                <div class="kicker"><span class="dot"></span><span id="kickerText">Find the right form. Submit with confidence.</span></div>
+                <div class="kicker">
+                  <span class="dot"></span>
+                  <span id="kickerText">Find the right form. Submit with confidence.</span>
+                </div>
+
                 <h1 id="headline">Premium assistance for every important form.</h1>
+
                 <p class="subtitle" id="subtitle">
-                  FormAssist helps you pick the correct category, follow a clear checklist, and complete submissions faster—with optional guided support when needed.
+                  Use the Form Finder + checklist to avoid mistakes. If you want, get guided help and track your request end-to-end.
                 </p>
 
-                <!-- Forms CTA Buttons -->
                 <div class="cta-section">
                   <div class="cta-forms">
-                    <a class="btn btn-primary" href="#form-finder" data-prefill="Entrance Exams">
-                      📝 Entrance Exams
-                    </a>
-                    <a class="btn btn-secondary" href="#form-finder" data-prefill="Govt Jobs">
-                      🏛️ Govt Jobs
-                    </a>
-                    <a class="btn btn-secondary" href="#form-finder" data-prefill="Private Jobs">
-                      💼 Private Jobs
-                    </a>
-                    <a class="btn btn-secondary" href="#form-finder" data-prefill="IDs & Licences">
-                      🪪 IDs & Licences
-                    </a>
-                    <a class="btn btn-secondary" href="#form-finder" data-prefill="Certificates">
-                      📜 Certificates
-                    </a>
-                    <a class="btn btn-secondary" href="#form-finder" data-prefill="Other">
-                      ➕ Other Forms
-                    </a>
+                    <a class="btn btn-primary" href="#form-finder" data-prefill="Entrance Exams">📝 Entrance Exams</a>
+                    <a class="btn btn-secondary" href="#form-finder" data-prefill="Govt Jobs">🏛️ Govt Jobs</a>
+                    <a class="btn btn-secondary" href="#form-finder" data-prefill="Private Jobs">💼 Private Jobs</a>
+                    <a class="btn btn-secondary" href="#form-finder" data-prefill="IDs & Licences">🪪 IDs & Licences</a>
+                    <a class="btn btn-secondary" href="#form-finder" data-prefill="Certificates">📜 Certificates</a>
+                    <a class="btn btn-secondary" href="#form-finder" data-prefill="Other">➕ Other Forms</a>
                   </div>
 
                   <div class="mini-links">
+                    <a href="#how-it-works">⚡ How it works</a>
                     <a href="#checklist">✓ Checklist</a>
                     <a href="#pricing">💰 View Plans</a>
-                    <a href="#support">💬 Support</a>
                     <a href="#track">📦 Track Order</a>
                   </div>
                 </div>
               </div>
 
-             <div class="visual" aria-label="Preview cards"> 
-  <!-- Floating decorative elements with images -->
-  <div class="float f1">
-    <img src="https://images.unsplash.com/photo-1559027312-11d549664de8?w=200&h=300&fit=crop&crop=center" alt="Floating preview 1">
-  </div>
-  <div class="float f2">
-    <img src="https://images.unsplash.com/photo-1559028009-7c5b47a736cc?w=180&h=280&fit=crop&crop=center" alt="Floating preview 2">
-  </div>
-  <div class="float f3">
-    <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=220&h=320&fit=crop&crop=center" alt="Floating preview 3">
-  </div>
+              <!-- Cleaned Visual (removed broken 'sc' + removed extra empty card snippet) -->
+              <div class="visual" aria-label="Preview cards">
+                <div class="float f1">
+                  <img src="https://images.unsplash.com/photo-1559027312-11d549664de8?w=200&h=300&fit=crop&crop=center" alt="Preview 1">
+                </div>
+                <div class="float f2">
+                  <img src="https://images.unsplash.com/photo-1559028009-7c5b47a736cc?w=180&h=280&fit=crop&crop=center" alt="Preview 2">
+                </div>
+                <div class="float f3">
+                  <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=220&h=320&fit=crop&crop=center" alt="Preview 3">
+                </div>
 
-  <div class="stack">
-    <!-- Card 1: Finder with image background -->
-    <div class="img-card c2" style="background-image: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,253,244,0.8)), url('Screenshot\ 2025-09-25\ 230400.png'); background-size: cover; background-position: center;">
-      <div class="card-content">
-        <div class="card-title">
-          <span class="chip"><span class="dot"></span> Finder</span>
-          <span class="metric">2–3 min</span>
-        </div>
-        <div class="lines">
-          <div class="line"><i style="--w:76%"></i></div>
-          <div class="line"><i style="--w:54%"></i></div>
-          <div class="line"><i style="--w:88%"></i></div>
-        </div>
-      </div>
-    </div>
+                <div class="stack">
+                  <div class="img-card c1" style='background-image: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(240,253,244,0.82)), url("Screenshot 2025-09-25 230400.png"); background-size: cover; background-position: center;'>
+                    <div class="card-content">
+                      <div class="card-title">
+                        <span class="chip"><span class="dot"></span> Finder</span>
+                        <span class="metric">2–3 min</span>
+                      </div>
+                      <div class="lines">
+                        <div class="line"><i style="--w:76%"></i></div>
+                        <div class="line"><i style="--w:54%"></i></div>
+                        <div class="line"><i style="--w:88%"></i></div>
+                      </div>
+                    </div>
+                  </div>
 
-    <!-- Card 2: Checklist with image background -->
-    <div class="img-card c2" style="background-image: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,253,244,0.8)), url('Screenshot\ 2025-09-25\ 230411.png'); background-size: cover; background-position: center;">
-      <div class="card-content">
-        <div class="card-title">
-          <span class="chip"><span class="dot"></span> Checklist</span>
-          <span class="metric">No misses</span>
-        </div>
-        <div class="lines">
-          <div class="line"><i style="--w:62%"></i></div>
-          <div class="line"><i style="--w:82%"></i></div>
-          <div class="line"><i style="--w:49%"></i></div>
-        </div>
-      </div>
-    </div>
+                  <div class="img-card c2" style='background-image: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(240,253,244,0.82)), url("Screenshot 2025-09-25 230411.png"); background-size: cover; background-position: center;'>
+                    <div class="card-content">
+                      <div class="card-title">
+                        <span class="chip"><span class="dot"></span> Checklist</span>
+                        <span class="metric">No misses</span>
+                      </div>
+                      <div class="lines">
+                        <div class="line"><i style="--w:62%"></i></div>
+                        <div class="line"><i style="--w:82%"></i></div>
+                        <div class="line"><i style="--w:49%"></i></div>
+                      </div>
+                    </div>
+                  </div>
 
-    <!-- Card 3: Support with image background -->
-     <!-- Support Card (neeche wala ab upar aa jayega) -->
-<div class="img-card c3" style="margin-top: -60px;">  <!-- YE style add kar do -->
-  <!-- baaki same -->
-</div>
+                  <div class="img-card c3">
+                    <div class="card-content">
+                      <div class="card-title">
+                        <span class="chip"><span class="dot"></span> Support</span>
+                        <span class="metric">Quick help</span>
+                      </div>
+                      <div class="lines">
+                        <div class="line"><i style="--w:70%"></i></div>
+                        <div class="line"><i style="--w:58%"></i></div>
+                      </div>
+                      <div class="hint" style="margin-top:6px;">Clear guidance, no confusion.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-    <div class="img-card c3" style="background-image: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,253,244,0.8)), url('sc'); background-size: cover; background-position: center;">
-      <div class="card-content">
-        <div class="card-title">
-          <span class="chip"><span class="dot"></span> Support</span>
-          <span class="metric">Quick help</span>
-        </div>
-        <div class="lines">
-          <div class="line"><i style="--w:70%"></i></div>
-          <div class="line"><i style="--w:58%"></i></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+            </div>
+          </section>
 
+          <!-- NEW: How it works -->
+          <section class="section" id="how-it-works" aria-label="How it works">
+            <h2>How it works</h2>
+            <p>A clean flow designed to reduce mistakes and save time.</p>
+
+            <div class="how-grid">
+              <div class="how-card">
+                <div class="how-num">1</div>
+                <div>
+                  <div class="how-title">Choose category</div>
+                  <div class="hint">Select Entrance/Govt/Private/IDs/Certificates and add details.</div>
+                </div>
+              </div>
+              <div class="how-card">
+                <div class="how-num">2</div>
+                <div>
+                  <div class="how-title">Get checklist</div>
+                  <div class="hint">Know what documents, sizes, and common mistakes to avoid.</div>
+                </div>
+              </div>
+              <div class="how-card">
+                <div class="how-num">3</div>
+                <div>
+                  <div class="how-title">Proceed your way</div>
+                  <div class="hint">Self-serve, or choose guided assistance if needed.</div>
+                </div>
+              </div>
+              <div class="how-card">
+                <div class="how-num">4</div>
+                <div>
+                  <div class="how-title">Track & support</div>
+                  <div class="hint">Track your request and get quick help for issues.</div>
+                </div>
+              </div>
+            </div>
           </section>
 
           <!-- Form Finder -->
           <section class="section" id="form-finder" aria-label="Form Finder">
             <h2>Form Finder (step-by-step)</h2>
-            <p>Choose a category, provide a few details, and get the next steps instantly—then decide if you want to proceed solo or with guided help.</p>
+            <p>Choose a category, provide a few details, and get next steps instantly—then decide if you want guided support.</p>
 
             <div class="stepper">
               <div class="panel">
@@ -1378,7 +334,7 @@
                         <button class="btn btn-primary" type="button" id="genSteps">Generate steps</button>
                         <a class="btn btn-secondary" href="#support">Need support?</a>
                       </div>
-                      <div class="hint" id="stepsHint">This is a demo. Replace with your real workflow.</div>
+                      <div class="hint" id="stepsHint">Instant preview. Final steps can vary by portal.</div>
                     </div>
                   </div>
                 </div>
@@ -1411,15 +367,15 @@
                     <div class="num">✓</div>
                     <div>
                       <div style="font-weight:820;">Submit and track</div>
-                      <div class="hint" style="margin:6px 0 0;">Save proof. Use Track Order for updates.</div>
+                      <div class="hint" style="margin:6px 0 0;">Save proof and track status updates.</div>
                     </div>
                   </div>
                 </div>
 
                 <div id="track" style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(15, 27, 20, 0.08);">
-                  <div style="font-weight:860; margin-bottom:10px;">Track Order</div>
+                  <div style="font-weight:860; margin-bottom:10px;">Track Request</div>
                   <div class="inline">
-                    <input id="orderId" placeholder="Order ID (demo)" />
+                    <input id="orderId" placeholder="Request ID (demo)" />
                     <button class="btn btn-primary" type="button" id="trackBtn">Track</button>
                   </div>
                   <div class="hint" id="trackResult"></div>
@@ -1428,25 +384,50 @@
             </div>
           </section>
 
+          <!-- Why choose us -->
+          <section class="section" id="why" aria-label="Why choose us">
+            <h2>Why choose FormAssist</h2>
+            <p>Built for clarity, speed, and peace of mind.</p>
+
+            <div class="why-grid">
+              <div class="why-card">
+                <div class="why-title">Verified checklist</div>
+                <div class="hint">Avoid common mistakes: size, format, mismatch, missing proof.</div>
+              </div>
+              <div class="why-card">
+                <div class="why-title">Transparent pricing</div>
+                <div class="hint">No hidden charges. Choose Basic/Plus/Pro based on your need.</div>
+              </div>
+              <div class="why-card">
+                <div class="why-title">Privacy-first</div>
+                <div class="hint">Only required info. Sensitive data sharing is optional.</div>
+              </div>
+              <div class="why-card">
+                <div class="why-title">Fast support</div>
+                <div class="hint">Get quick answers for portal issues, uploads, and steps.</div>
+              </div>
+            </div>
+          </section>
+
           <!-- Checklist -->
           <section class="section" id="checklist" aria-label="Checklist">
             <h2>Checklist</h2>
-            <p>Use this to avoid common errors before final submission.</p>
-
+            <p>Use this before final submission to reduce errors.</p>
             <div class="panel">
               <ul class="features">
-                <li>Verify eligibility + dates on official portal.</li>
+                <li>Verify eligibility + dates on the official portal.</li>
                 <li>Keep photo/sign in required dimensions + size.</li>
-                <li>Ensure name/DOB match across all documents.</li>
-                <li>Save receipts, acknowledgement, and final PDF.</li>
+                <li>Ensure name/DOB match across documents.</li>
+                <li>Save receipts, acknowledgement and final PDF.</li>
+                <li>Double-check category, reservation, and exam center choices.</li>
               </ul>
             </div>
           </section>
 
           <!-- Pricing -->
           <section class="section" id="pricing" aria-label="Pricing">
-            <h2>Pricing/Plans</h2>
-            <p>Choose based on how much guidance you want. Upgrade anytime.</p>
+            <h2>Pricing</h2>
+            <p>Pick a plan based on how much guidance you want.</p>
 
             <div class="pricing">
               <div class="price-card">
@@ -1461,9 +442,9 @@
                   </div>
                 </div>
                 <ul class="features">
-                  <li>Form Finder (basic).</li>
+                  <li>Form Finder (basic preview).</li>
                   <li>Checklist templates.</li>
-                  <li>Order tracking demo.</li>
+                  <li>Tracking demo.</li>
                 </ul>
                 <a class="btn btn-secondary btn-full" href="#form-finder">Start Basic</a>
               </div>
@@ -1472,17 +453,17 @@
                 <div class="price-top">
                   <div>
                     <div class="plan">Plus</div>
-                    <div class="per">Popular</div>
+                    <div class="per">Most popular</div>
                   </div>
                   <div style="text-align:right;">
                     <div class="price">₹199</div>
-                    <div class="per">per form</div>
+                    <div class="per">per request</div>
                   </div>
                 </div>
                 <ul class="features">
                   <li>Guided steps + checklist.</li>
+                  <li>Submission review (basic).</li>
                   <li>Priority support window.</li>
-                  <li>Submission review.</li>
                 </ul>
                 <button class="btn btn-primary btn-full" type="button" id="choosePlus">Choose Plus</button>
               </div>
@@ -1499,28 +480,54 @@
                   </div>
                 </div>
                 <ul class="features">
-                  <li>Multiple forms/month.</li>
+                  <li>Multiple requests/month.</li>
                   <li>Faster support.</li>
-                  <li>Saved profiles.</li>
+                  <li>Saved details (coming soon).</li>
                 </ul>
                 <a class="btn btn-secondary btn-full" href="#support">Choose Pro</a>
               </div>
             </div>
           </section>
 
+          <!-- FAQ -->
+          <section class="section" id="faq" aria-label="FAQ">
+            <h2>FAQ</h2>
+            <p>Clear answers to common questions.</p>
+
+            <div class="faq">
+              <details class="faq-item">
+                <summary>Do you fill the form on my behalf?</summary>
+                <div class="faq-body">This page is a template. Decide your service model: guidance only, or assisted filling with consent.</div>
+              </details>
+              <details class="faq-item">
+                <summary>Is my data safe?</summary>
+                <div class="faq-body">Share only what is required. Avoid sending OTP/password. Use official portals for payments.</div>
+              </details>
+              <details class="faq-item">
+                <summary>What if the portal shows an error?</summary>
+                <div class="faq-body">Support can guide you on retry steps, file formats, and common portal issues.</div>
+              </details>
+              <details class="faq-item">
+                <summary>How do refunds work?</summary>
+                <div class="faq-body">Refund policy depends on service stage (not started / in progress / completed). See Refund section.</div>
+              </details>
+            </div>
+          </section>
+
           <!-- Support -->
           <section class="section" id="support" aria-label="Support">
-            <h2>Support/Contact</h2>
-            <p>Ask a question and get clear next steps. Keep sensitive info private unless requested.</p>
+            <h2>Support</h2>
+            <p>Send a message and get clear next steps. Never share OTP/password.</p>
 
             <div class="support-grid">
               <div class="panel">
-                <div style="font-weight:860; margin-bottom:10px;">Contact Details</div>
+                <div style="font-weight:860; margin-bottom:10px;">Contact</div>
                 <ul class="features">
-                  <li><strong>Email:</strong> support@formassist.example</li>
+                  <li><strong>Email:</strong> your-email@example.com</li>
                   <li><strong>WhatsApp:</strong> +91-XXXXXXXXXX</li>
                   <li><strong>Hours:</strong> 10:00–19:00 IST</li>
                 </ul>
+                <div class="hint">Replace with your real contact details.</div>
               </div>
 
               <div class="panel">
@@ -1528,7 +535,8 @@
                 <label for="msgName">Name</label>
                 <input id="msgName" placeholder="Your name" />
                 <label for="msgText">Message</label>
-                <textarea id="msgText" rows="3" placeholder="What form are you applying for?"></textarea>
+                <textarea id="msgText" rows="3" placeholder="Which form are you applying for? What issue are you facing?"></textarea>
+
                 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;">
                   <button class="btn btn-primary" type="button" id="sendMsg">Send</button>
                   <button class="btn btn-secondary" type="button" id="clearMsg">Clear</button>
@@ -1538,34 +546,42 @@
             </div>
           </section>
 
-          <!-- Policies -->
+          <!-- Policies (clean templates) -->
           <section class="section" id="privacy" aria-label="Privacy Policy">
             <h2>Privacy Policy</h2>
-            <p>Placeholder — replace with your actual privacy policy, data retention, and consent details.</p>
+            <p>Short version (replace with your final legal text).</p>
             <div class="panel">
-              <p style="margin:0;color:var(--text-muted);line-height:1.6;">
-                FormAssist collects only what's necessary, stores securely, and explains data usage clearly.
-              </p>
+              <ul class="features">
+                <li>Only required information is collected to provide assistance.</li>
+                <li>Never ask for OTP/password. Payments should be done on official portals.</li>
+                <li>Data is used only for support/tracking and not sold to third parties.</li>
+                <li>You can request deletion of your data by contacting support.</li>
+              </ul>
             </div>
           </section>
 
           <section class="section" id="terms" aria-label="Terms">
             <h2>Terms</h2>
-            <p>Placeholder — replace with your actual terms of service and limitations.</p>
+            <p>Basic service terms (replace with your final terms).</p>
             <div class="panel">
-              <p style="margin:0;color:var(--text-muted);line-height:1.6;">
-                Clarify responsibility boundaries between FormAssist, official portals, and users.
-              </p>
+              <ul class="features">
+                <li>FormAssist provides guidance/support; final submission responsibility remains with the user.</li>
+                <li>Official portals can change rules; always verify on the official website.</li>
+                <li>Delays due to portal downtime are not in control of FormAssist.</li>
+              </ul>
             </div>
           </section>
 
           <section class="section" id="refund" aria-label="Refund Policy">
             <h2>Refund</h2>
-            <p>Placeholder — replace with your refund and cancellation rules.</p>
+            <p>Simple policy template (customize as needed).</p>
             <div class="panel">
-              <p style="margin:0;color:var(--text-muted);line-height:1.6;">
-                Specify what is refundable, timelines, processing mode, and exceptions.
-              </p>
+              <ul class="features">
+                <li>Not started: 100% refund (minus payment gateway fees if any).</li>
+                <li>In progress: partial refund depending on work completed.</li>
+                <li>Completed guidance/review: no refund.</li>
+              </ul>
+              <div class="hint">Write clear timelines (e.g., 3–7 business days) after you finalize.</div>
             </div>
           </section>
 
@@ -1585,181 +601,6 @@
     </div>
   </div>
 
-  <script>
-    // Smooth scroll + offset
-    (function() {
-      const navbar = document.querySelector('.navbar');
-      function getOffset() {
-        return (navbar?.getBoundingClientRect().height || 0) + 20;
-      }
-
-      function scrollToHash(hash) {
-        const el = document.querySelector(hash);
-        if (!el) return;
-        const y = el.getBoundingClientRect().top + window.scrollY - getOffset();
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }
-
-      document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener('click', (e) => {
-          const href = a.getAttribute('href');
-          if (!href || href === '#') return;
-          e.preventDefault();
-          history.pushState(null, '', href);
-          closeAllDropdowns();
-          scrollToHash(href);
-        });
-      });
-
-      window.addEventListener('load', () => {
-        if (location.hash) scrollToHash(location.hash);
-      });
-    })();
-
-    // Dropdown logic
-    const dropdowns = Array.from(document.querySelectorAll('.dropdown'));
-
-    function closeAllDropdowns() {
-      dropdowns.forEach(dd => {
-        dd.setAttribute('aria-expanded', 'false');
-        const btn = dd.querySelector('[data-dd]');
-        if (btn) btn.setAttribute('aria-expanded', 'false');
-      });
-    }
-
-    dropdowns.forEach(dd => {
-      const btn = dd.querySelector('[data-dd]');
-      btn?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isOpen = dd.getAttribute('aria-expanded') === 'true';
-        closeAllDropdowns();
-        dd.setAttribute('aria-expanded', String(!isOpen));
-        btn.setAttribute('aria-expanded', String(!isOpen));
-      });
-    });
-
-    document.addEventListener('click', closeAllDropdowns);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeAllDropdowns();
-    });
-
-    // Prefill category
-    function prefillCategory(value) {
-      const sel = document.getElementById('category');
-      if (!sel) return;
-      const options = Array.from(sel.options).map(o => o.text);
-      sel.value = options.includes(value) ? value : 'Other';
-    }
-
-    document.querySelectorAll('[data-prefill]').forEach(el => {
-      el.addEventListener('click', () => {
-        prefillCategory(el.getAttribute('data-prefill'));
-      });
-    });
-
-    // Form Finder demo
-    document.getElementById('genSteps')?.addEventListener('click', () => {
-      const cat = document.getElementById('category')?.value || 'Form';
-      const state = document.getElementById('state')?.value?.trim();
-      const purpose = document.getElementById('purpose')?.value?.trim();
-      const deadline = document.getElementById('deadline')?.value;
-
-      const badge = document.getElementById('previewBadge');
-      if (badge) badge.textContent = 'Updated';
-
-      const preview = document.getElementById('preview');
-      if (preview) {
-        preview.innerHTML = `
-          <div class="step" style="margin:0;">
-            <div class="num">1</div>
-            <div>
-              <div style="font-weight:820;">Confirm portal: ${cat}${state ? ' • ' + state : ''}</div>
-              <div class="hint" style="margin:6px 0 0;">Verify official variant before payment.</div>
-            </div>
-          </div>
-          <div class="step" style="margin:0;">
-            <div class="num">2</div>
-            <div>
-              <div style="font-weight:820;">Prepare uploads</div>
-              <div class="hint" style="margin:6px 0 0;">Keep photo/sign ready. Check DOB consistency.</div>
-            </div>
-          </div>
-          <div class="step" style="margin:0;">
-            <div class="num">3</div>
-            <div>
-              <div style="font-weight:820;">Submit + save proof</div>
-              <div class="hint" style="margin:6px 0 0;">Use Track Order for status updates.</div>
-            </div>
-          </div>
-        `;
-      }
-    });
-
-    // Track order
-    document.getElementById('trackBtn')?.addEventListener('click', () => {
-      const id = document.getElementById('orderId')?.value?.trim();
-      const out = document.getElementById('trackResult');
-      if (!out) return;
-      if (!id) {
-        out.textContent = 'Enter Order ID (demo).';
-        return;
-      }
-      out.textContent = `Order ${id}: In review / awaiting docs (demo).`;
-    });
-
-    // Support form
-    document.getElementById('sendMsg')?.addEventListener('click', () => {
-      const name = document.getElementById('msgName')?.value?.trim() || 'there';
-      const msg = document.getElementById('msgText')?.value?.trim();
-      const out = document.getElementById('msgResult');
-      if (!out) return;
-      if (!msg) {
-        out.textContent = 'Please enter a message.';
-        return;
-      }
-      out.textContent = `Thanks, ${name}! Message queued (demo).`;
-    });
-
-    document.getElementById('clearMsg')?.addEventListener('click', () => {
-      document.getElementById('msgName').value = '';
-      document.getElementById('msgText').value = '';
-      const out = document.getElementById('msgResult');
-      if (out) out.textContent = '';
-    });
-
-    // Choose Plus button
-    document.getElementById('choosePlus')?.addEventListener('click', () => {
-      alert('Choose Plus: Integrate with your payment system. (Demo)');
-    });
-
-    // Language toggle
-    const langState = { value: 'EN' };
-
-    function setLang(lang) {
-      langState.value = lang;
-      const en = lang === 'EN';
-
-      document.getElementById('langEN').setAttribute('aria-pressed', en ? 'true' : 'false');
-      document.getElementById('langHI').setAttribute('aria-pressed', en ? 'false' : 'true');
-
-      document.getElementById('kickerText').textContent = en
-        ? 'Find the right form. Submit with confidence.'
-        : 'सही फॉर्म चुनें। भरोसे के साथ सबमिट करें।';
-
-      document.getElementById('headline').textContent = en
-        ? 'Premium assistance for every important form.'
-        : 'हर ज़रूरी फॉर्म के लिए प्रीमियम सहायता।';
-
-      document.getElementById('subtitle').textContent = en
-        ? 'FormAssist helps you pick the correct category, follow a clear checklist, and complete submissions faster—with optional guided support when needed.'
-        : 'FormAssist सही कैटेगरी चुनने, साफ़ चेकलिस्ट फॉलो करने और फॉर्म जल्दी पूरा करने में मदद करता है।';
-    }
-
-    document.getElementById('langEN')?.addEventListener('click', () => setLang('EN'));
-    document.getElementById('langHI')?.addEventListener('click', () => setLang('HI'));
-
-    // Footer year
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
